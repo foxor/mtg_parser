@@ -9,10 +9,12 @@ class AST(object):
     self.children = []
 
   def walk(self, name, *args, **kwargs):
-    if hasattr(self, name):
-      getattr(self, name)(*args, **kwargs)
-    for child in get_children():
+    if hasattr(self, "pre" + name):
+      getattr(self, "pre" + name)(*args, **kwargs)
+    for child in self.get_children():
       child.walk(name, *args, **kwargs)
+    if hasattr(self, name):
+      return getattr(self, name)(*args, **kwargs)
     return self
 
   def add_child(self, child):
@@ -22,11 +24,31 @@ class AST(object):
   def get_children(self):
     return self.children
 
+  def get_name(self):
+    return "%s" % self.__class__
+
+  def prerepresent(self, *args, **kwargs):
+    kwargs['repr_args']['repr'] = kwargs['repr_args'].get('repr', []) + [' ' * kwargs['repr_args'].get('ident', 0) + self.get_name()]
+    kwargs['repr_args']['indent'] = kwargs['repr_args'].get('indent', 0) + 1
+
+  def represent(self, *args, **kwargs):
+    kwargs['repr_args']['indent'] = kwargs['repr_args'].get('indent', 0) - 1
+
+  def __repr__(self):
+    repr_args = {
+      'repr': [],
+      'indent': 0
+    }
+    self.walk('represent', repr_args=repr_args)
+    return '\n'.join(repr_args['repr'])
+
 class Instant(AST):
   def __init__(self, text, cost, name):
     self.text = text
     self.cost = cost
     self.name = name
+    super(Instant, self).__init__()
+    self.add_child(text)
 
   def play(self, *args, **kwargs):
     self.walk("cast", *args, **kwargs)
@@ -36,9 +58,6 @@ class Instant(AST):
 
   def cast(self, *args, **kwargs):
     kwargs['player'].game.deduct_mana(self.cost)
-
-  def get_children(self):
-    return [text]
 
 class Sorcery(AST):
   pass
@@ -60,6 +79,7 @@ class BasicLand(AST):
     self.name = name
     self.color = color
     self.types = types
+    super(BasicLand, self).__init__()
 
   def play(self, *args, **kwargs):
     kwargs['name'] = '%s:%s' % (kwargs['player'].name, self.name)
@@ -74,10 +94,7 @@ class ability(AST):
 
 class text(AST):
   def __init__(self):
-    self.abilities = []
-  def add_affect(self, ability):
-    self.abilities += [ability]
-    return self
+    super(text, self).__init__()
 
 class affect(AST):
   pass
@@ -86,10 +103,12 @@ class damage_affect(affect):
   def __init__(self, number, target):
     self.number = number
     self.target = target
+    super(damage_affect, self).__init__()
 
 class player_choice(AST):
   def __init__(self, *args):
     self.choices = args
+    super(player_choice, self).__init__()
 
 class cost(AST):
   pass
@@ -114,7 +133,7 @@ class black(color):
 
 def p_text_affect(p):
   'text : text affect'
-  p[0] = p[1].add_affect(p[2])
+  p[0] = p[1].add_child(p[2])
 
 def p_text_cost(p):
   'text : cost'

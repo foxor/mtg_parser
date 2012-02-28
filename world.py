@@ -22,11 +22,16 @@ def get_types_per_card(card):
   return _conn.fetchall()
 
 def interpert(name, text, types, card):
-  import pdb;pdb.set_trace()
   if 'Basic' in types and 'Land' in types:
     return BasicLand(name, text, types)
   ast_text = parse(name.lower(), text.lower())
   ast_cost = parse(name.lower(), card[2].lower())
+  print "="*80
+  print "CARD INFO"
+  print ast_cost
+  print ast_text
+  print "="*80
+  import pdb;pdb.set_trace()
   if 'Instant' in types:
     return Instant(ast_text, ast_cost, name)
   raise Exception("Not Implemented")
