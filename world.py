@@ -137,6 +137,10 @@ class player(object):
     print "Keeping"
     return True
 
+  def deduct_mana(self):
+    #FIXME: temp
+    self.mana_pool = []
+
   def get_hand(self):
     return self.hand
 

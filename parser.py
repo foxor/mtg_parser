@@ -28,7 +28,7 @@ class AST(object):
     return "%s" % self.__class__
 
   def prerepresent(self, *args, **kwargs):
-    kwargs['repr_args']['repr'] = kwargs['repr_args'].get('repr', []) + [' ' * kwargs['repr_args'].get('ident', 0) + self.get_name()]
+    kwargs['repr_args']['repr'] = kwargs['repr_args'].get('repr', []) + [(' ' * kwargs['repr_args'].get('indent', 0)) + self.get_name()]
     kwargs['repr_args']['indent'] = kwargs['repr_args'].get('indent', 0) + 1
 
   def represent(self, *args, **kwargs):
@@ -57,7 +57,7 @@ class Instant(AST):
     self.walk("resolve", *args, **kwargs)
 
   def cast(self, *args, **kwargs):
-    kwargs['player'].game.deduct_mana(self.cost)
+    kwargs['player'].deduct_mana(self.cost)
 
 class Sorcery(AST):
   pass
@@ -102,13 +102,16 @@ class affect(AST):
 class damage_affect(affect):
   def __init__(self, number, target):
     self.number = number
-    self.target = target
     super(damage_affect, self).__init__()
+    self.add_child(target)
 
 class player_choice(AST):
   def __init__(self, *args):
     self.choices = args
     super(player_choice, self).__init__()
+
+  def get_name(self):
+    return ", ".join(self.choices) or ""
 
 class cost(AST):
   pass
