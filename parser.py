@@ -105,6 +105,9 @@ class damage_affect(affect):
     super(damage_affect, self).__init__()
     self.add_child(target)
 
+  def get_name(self):
+    return "%s damage to" % self.number
+
 class player_choice(AST):
   def __init__(self, *args):
     self.choices = args
