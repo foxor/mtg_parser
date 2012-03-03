@@ -39,12 +39,10 @@ def interpert(name, text, types, card):
 _card_code = {}
 def card_code(name):
   if not name in _card_code:
-    #if the file doesn't exist
     card = get_card_by_name(name)
     rules = get_rules_per_card(card)
     types = get_types_per_card(card)
     code = interpert(name, ' '.join([x[2] for x in rules]), [x[1] for x in types], card)
-    #either way
     _card_code[name] = code
   return _card_code[name]
 
@@ -203,8 +201,8 @@ class step(object):
       print "Your battlefield: %s" % game.repr_types_dict(**my_game.get_active_player().battle_field)
       print "Do you wish to do anything?"
       choice = raw_input().split(':')
-      if not choice:
-        continue
+      if not choice[0]:
+        choice = "play Lightning Bolt".split(':')
       parsed = [choice[0].split(' ')[0], ' '.join(choice[0].split(' ')[1:])]
       args = (choice[1].split(' ') if len(choice) > 1 and choice[1] else [])
       kwargs = json.loads(':'.join(choice[2:]).strip() if len(choice) > 2 else '{}')
