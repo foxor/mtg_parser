@@ -7,18 +7,20 @@ from token_out import tokens, tokenize
 class AST(object):
   def __init__(self):
     self.children = []
+    self.walk_results = []
 
   def walk(self, name, *args, **kwargs):
     if hasattr(self, "pre" + name):
       getattr(self, "pre" + name)(*args, **kwargs)
-    for child in self.get_children():
-      child.walk(name, *args, **kwargs)
+    for n, child in enumerate(self.get_children()):
+      self.walk_results[n] = child.walk(name, *args, **kwargs)
     if hasattr(self, name):
       return getattr(self, name)(*args, **kwargs)
     return self
 
   def add_child(self, child):
     self.children += [child]
+    self.walk_results += [None]
     return self
 
   def get_children(self):
