@@ -381,6 +381,14 @@ class game(object):
   def repr_types_dict(**kwargs):
     return set(sum([[x['name'] for x in kwargs[y]] for y in kwargs], []))
 
+  def push_stack(self, spell):
+    self.stack.append(spell)
+    self.pop_stack()
+
+  def pop_stack(self):
+    # Call the "pop" method of the top spell on the stack and remove it
+    self.stack.pop().pop()
+
   def order_players(self):
     players.sort(key=lambda x: x.pregame_roll)
 

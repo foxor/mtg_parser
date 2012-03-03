@@ -58,8 +58,12 @@ class Instant(AST):
   def pop(self, *args, **kwargs):
     self.walk("resolve", *args, **kwargs)
 
+  def resolve(self, *args, **kwargs):
+    print "Resolvin"
+
   def cast(self, *args, **kwargs):
     kwargs['player'].deduct_mana(self.cost)
+    kwargs['player'].game.push_stack(self)
 
 class Sorcery(AST):
   pass
