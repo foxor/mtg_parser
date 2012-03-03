@@ -105,6 +105,7 @@ class player(object):
     self.exile = card_pile()
     self.mana_pool = []
     self.choose_deck()
+    self.life = 20
     self.prep_pregame_roll()
     self.library.shuffle()
     self.draw_hand()
@@ -129,6 +130,9 @@ class player(object):
 
   def prep_pregame_roll(self):
     self.pregame_roll = random.randint(0,20)
+
+  def apply_damage(self, number):
+    self.life -= 20
 
   def approve_hand(self):
     print "Looking at a %s, keep?" % self.hand

@@ -44,12 +44,12 @@ class AST(object):
     self.walk('represent', repr_args=repr_args)
     return '\n'.join(repr_args['repr'])
 
-class Instant(AST):
+class spell(AST):
   def __init__(self, text, cost, name):
+    super(spell, self).__init__()
     self.text = text
     self.cost = cost
     self.name = name
-    super(Instant, self).__init__()
     self.add_child(text)
 
   def play(self, *args, **kwargs):
@@ -58,12 +58,13 @@ class Instant(AST):
   def pop(self, *args, **kwargs):
     self.walk("resolve", *args, **kwargs)
 
-  def resolve(self, *args, **kwargs):
-    print "Resolvin"
-
   def cast(self, *args, **kwargs):
     kwargs['player'].deduct_mana(self.cost)
     kwargs['player'].game.push_stack(self)
+
+class Instant(spell):
+  def resolve(self, *args, **kwargs):
+    self.walk("apply", *args, **kwargs)
 
 class Sorcery(AST):
   pass
@@ -113,6 +114,9 @@ class damage_affect(affect):
 
   def get_name(self):
     return "%s damage to" % self.number
+
+  def apply(self):
+    return self.walk_results[0].apply_damage(self.number)
 
 class player_choice(AST):
   def __init__(self, *args):
