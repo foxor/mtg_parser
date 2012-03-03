@@ -118,6 +118,14 @@ class damage_affect(affect):
   def apply(self):
     return self.walk_results[0].apply_damage(self.number)
 
+class target(AST):
+  def __init__(self, child):
+    super(target, self).__init__()
+    self.add_child(child)
+
+  def get_name(self):
+    return "target"
+
 class player_choice(AST):
   def __init__(self, *args):
     self.choices = args
@@ -165,7 +173,7 @@ def p_affect_damage(p):
 
 def p_object_target(p):
   'object : TARGET type'
-  p[0] = p[2]
+  p[0] = target(p[2])
 
 def p_type_choice(p):
   'type : type OR type'
