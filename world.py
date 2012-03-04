@@ -132,7 +132,7 @@ class player(object):
     self.pregame_roll = random.randint(0,20)
 
   def apply_damage(self, number):
-    self.life -= 20
+    self.life -= number
 
   def choose(self, choices):
     print "="*80
@@ -172,6 +172,9 @@ class player(object):
 
   def pregame_opportunity(self):
     pass
+
+  def __repr__(self):
+    return "%s:%s" % (self.name, self.life)
 
 class step(object):
   @staticmethod
@@ -390,7 +393,7 @@ class game(object):
 
   @staticmethod
   def repr_types_dict(**kwargs):
-    return set(sum([[x['name'] for x in kwargs[y]] for y in kwargs], []))
+    return set(sum([[x.__repr__() for x in kwargs[y]] for y in kwargs], []))
 
   def push_stack(self, spell):
     self.stack.append(spell)
@@ -399,6 +402,9 @@ class game(object):
   def pop_stack(self):
     # Call the "pop" method of the top spell on the stack and remove it
     self.stack.pop().pop()
+
+  def get_targets_of_type(self, target_type):
+    return self.targets[target_type]
 
   def order_players(self):
     players.sort(key=lambda x: x.pregame_roll)

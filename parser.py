@@ -130,7 +130,7 @@ class target(AST):
     return self.cast_target
 
   def cast(self, *args, **kwargs):
-    self.cast_target = self.walk("targeting", *args, **kwargs)
+    self.cast_target = kwargs['player'].choose(kwargs['player'].game.get_targets_of_type(self.walk("targeting", *args, **kwargs)))
     return self.cast_target
     
   def targeting(self, *args, **kwargs):
