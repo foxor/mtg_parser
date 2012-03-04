@@ -126,6 +126,16 @@ class target(AST):
   def get_name(self):
     return "target"
 
+  def apply(self, *args, **kwargs):
+    return self.cast_target
+
+  def cast(self, *args, **kwargs):
+    self.cast_target = self.walk("targeting", *args, **kwargs)
+    return self.cast_target
+    
+  def targeting(self, *args, **kwargs):
+    return self.walk_results[0]
+
 class player_choice(AST):
   def __init__(self, *args):
     self.choices = args
@@ -133,6 +143,9 @@ class player_choice(AST):
 
   def get_name(self):
     return ", ".join(self.choices) or ""
+
+  def targeting(self, *args, **kwargs):
+    return kwargs['player'].choose(self.choices)
 
 class cost(AST):
   pass

@@ -134,6 +134,13 @@ class player(object):
   def apply_damage(self, number):
     self.life -= 20
 
+  def choose(self, choices):
+    print "="*80
+    print "Choosing between: "
+    print choices
+    print "="*80
+    return choices[-1]
+
   def approve_hand(self):
     print "Looking at a %s, keep?" % self.hand
     print "Keeping"
