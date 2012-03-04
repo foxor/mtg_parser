@@ -59,8 +59,10 @@ class spell(AST):
     self.walk("resolve", *args, **kwargs)
 
   def cast(self, *args, **kwargs):
-    kwargs['player'].deduct_mana(self.cost)
-    kwargs['player'].game.push_stack(self)
+    if kwargs['player'].deduct_mana(self.cost):
+      kwargs['player'].game.push_stack(self)
+    else:
+      print "Not enough mana"
 
 class Instant(spell):
   def resolve(self, *args, **kwargs):
