@@ -16,7 +16,7 @@ class AST(object):
       self.walk_results[n] = child.walk(name, *args, **kwargs)
     if hasattr(self, name):
       return getattr(self, name)(*args, **kwargs)
-    return self
+    return self.walk_results or self
 
   def add_child(self, child):
     self.children += [child]
@@ -59,7 +59,9 @@ class spell(AST):
     self.walk("resolve", *args, **kwargs)
 
   def cast(self, *args, **kwargs):
-    if kwargs['player'].deduct_mana(self.cost):
+    cost = self.cost.walk('mana', *args, **kwargs)
+    import pdb;pdb.set_trace()
+    if kwargs['player'].deduct_mana(cost):
       kwargs['player'].game.push_stack(self)
     else:
       print "Not enough mana"
@@ -156,19 +158,24 @@ class color(AST):
   pass
 
 class white(color):
-  pass
+  def mana(*args, **kwargs):
+    return "w"
 
 class red(color):
-  pass
+  def mana(*args, **kwargs):
+    return "r"
 
 class green(color):
-  pass
+  def mana(*args, **kwargs):
+    return "g"
 
 class blue(color):
-  pass
+  def mana(*args, **kwargs):
+    return "u"
 
 class black(color):
-  pass
+  def mana(*args, **kwargs):
+    return "b"
 
 def p_text_affect(p):
   'text : text affect'

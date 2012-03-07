@@ -147,7 +147,6 @@ class player(object):
     return True
 
   def deduct_mana(self, cost):
-    #FIXME: temp
     self.mana_pool = []
     return True
 
