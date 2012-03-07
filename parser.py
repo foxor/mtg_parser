@@ -60,7 +60,6 @@ class spell(AST):
 
   def cast(self, *args, **kwargs):
     cost = self.cost.walk('mana', *args, **kwargs)
-    import pdb;pdb.set_trace()
     if kwargs['player'].deduct_mana(cost):
       kwargs['player'].game.push_stack(self)
     else:

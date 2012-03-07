@@ -147,7 +147,13 @@ class player(object):
     return True
 
   def deduct_mana(self, cost):
-    self.mana_pool = []
+    backup_pool = self.mana_pool
+    for mana in cost:
+      if mana in self.mana_pool:
+        self.mana_pool = self.mana_pool[:self.mana_pool.index(mana)] + self.mana_pool[self.mana_pool.index(mana) + 1:]
+      else:
+        self.mana_pool = backup_pool
+        return False
     return True
 
   def get_hand(self):
