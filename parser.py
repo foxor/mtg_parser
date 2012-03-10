@@ -92,12 +92,11 @@ class BasicLand(AST):
     super(BasicLand, self).__init__()
 
   def play(self, *args, **kwargs):
-    kwargs['name'] = '%s:%s' % (kwargs['player'].name, self.name)
-    kwargs['types'] = self.types
-    kwargs['player'].game.move_to_battlefield(kwargs)
+    self.player = kwargs['player']
+    self.player.game.move_to_battlefield(self)
 
   def activate(self, *args, **kwargs):
-    kwargs['player'].mana_pool.append({'mana': self.color})
+    self.player.mana_pool.append(self.color)
 
 class ability(AST):
   pass
@@ -158,23 +157,23 @@ class color(AST):
 
 class white(color):
   def mana(*args, **kwargs):
-    return "w"
+    return "W"
 
 class red(color):
   def mana(*args, **kwargs):
-    return "r"
+    return "R"
 
 class green(color):
   def mana(*args, **kwargs):
-    return "g"
+    return "G"
 
 class blue(color):
   def mana(*args, **kwargs):
-    return "u"
+    return "U"
 
 class black(color):
   def mana(*args, **kwargs):
-    return "b"
+    return "B"
 
 def p_text_affect(p):
   'text : text affect'

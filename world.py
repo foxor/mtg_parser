@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import itertools
 import uuid
 import json
 import MySQLdb
@@ -31,7 +32,6 @@ def interpert(name, text, types, card):
   print ast_cost
   print ast_text
   print "="*80
-  import pdb;pdb.set_trace()
   if 'Instant' in types:
     return Instant(ast_text, ast_cost, name)
   raise Exception("Not Implemented")
@@ -139,7 +139,7 @@ class player(object):
     print "Choosing between: "
     print choices
     print "="*80
-    return choices[-1]
+    return list(choices)[-1]
 
   def approve_hand(self):
     print "Looking at a %s, keep?" % self.hand
@@ -219,6 +219,7 @@ class step(object):
       print "Your hand: %s" % my_game.get_active_player().hand
       print "Valid targets: %s" % game.repr_types_dict(**my_game.targets)
       print "Your battlefield: %s" % game.repr_types_dict(**my_game.get_active_player().battle_field)
+      print "Your mana pool: %s" % my_game.get_active_player().mana_pool
       print "Do you wish to do anything?"
       choice = raw_input().split(':')
       if not choice[0]:
@@ -424,15 +425,16 @@ class game(object):
       cur_player += 1
 
   def move_to_battlefield(self, card):
-    for card_type in card['types']:
+    for card_type in card.types:
       self.targets[card_type] = self.targets.get(card_type, []) + [card]
-      card['player'].battle_field[card_type] = card['player'].battle_field.get(card_type, []) + [card]
+      card.player.battle_field[card_type] = card.player.battle_field.get(card_type, []) + [card]
 
   def play(self, card_name, *args, **kwargs):
     self.get_active_player().play(card_name, *args, **kwargs)
 
   def activate(self, card_name, *args, **kwargs):
-    self.get_active_player().activate(card_name, *args, **kwargs)
+    match = set(itertools.chain(*[[y for y in self.get_active_player().battle_field[x] if y.name == card_name] for x in self.get_active_player().battle_field]))
+    self.get_active_player().choose(match).activate(*args, **kwargs)
 
   def get_active_player(self):
     return self.players[self.active_player]
