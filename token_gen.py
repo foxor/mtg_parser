@@ -26,7 +26,10 @@ re_number = re.compile(number)
 apostrophe = r"'"
 re_apostrophe = re.compile(apostrophe)
 
-allowed_punctuation = "+/[]-,"
+colon = r':'
+re_colon = re.compile(colon)
+
+allowed_punctuation = "+/[]-,:"
 
 disallowed = r"[^a-zA-Z0-9\s~" + re.escape(allowed_punctuation) + r"]"
 
@@ -38,6 +41,7 @@ def sanitize(card_name, card_text):
   transformed_text = re.sub(re_variable, "x", card_text)
   transformed_text = re.sub(card_name, "~", transformed_text)
   transformed_text = re.sub(re_apostrophe, " apostrophe ", transformed_text)
+  transformed_text = re.sub(re_colon, " colon ", transformed_text)
   if "," in card_name:
     transformed_text = re.sub(card_name.split(',')[0], "~", transformed_text)
   transformed_text = re.sub(disallowed, "", transformed_text)

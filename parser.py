@@ -188,21 +188,25 @@ class black(color):
 def p_error(p):
   raise Exception("No Errors allowed: %s" % p)
 
+def p_text_term(p):
+  'text : text_part'
+  p[0] = p[1]
+
+def p_text_recur(p):
+  'text : text text_part'
+  p[0] = p[1].add_child(p[2])
+
 def p_text_affect(p):
-  'text : text affect'
+  'text_part : affect'
   p[0] = p[1].add_child(p[2])
 
 def p_text_ability(p):
-  'text : text ability'
+  'text_part : ability'
   p[0] = unimplemented()
 
 def p_text_cost(p):
-  'text : cost'
+  'text_part : cost'
   p[0] = p[1]
-
-def p_text_none(p):
-  'text : '
-  p[0] = text()
 
 def p_ability_static(p):
   'ability : affect time'
@@ -211,6 +215,9 @@ def p_ability_static(p):
 def p_ability_triggered(p):
   'ability : trigger COMMA affect'
   p[0] = unimplemented()
+
+def p_ability_activated(p):
+  'ability : cost COLON affect'
 
 def p_time_untap(p):
   'time : DURING YOUR UNTAP STEP'
@@ -231,6 +238,10 @@ def p_affect_stay_tapped(p):
 def p_affect_damage(p):
   'affect : TILDE DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
+
+def p_affect_add_mana(p):
+  'affect : ADD cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
 
 def p_object_backreference_controller(p):
   'object : backref APOSTROPHE S CONTROLLER'
@@ -268,17 +279,25 @@ def p_number_num(p):
   'number : NUM'
   p[0] = int(p[1])
 
+def p_cost_term(p):
+  'cost : cost_part'
+  p[0] = p[1]
+
+def p_cost_recur(p):
+  'cost : cost cost_part'
+  p[0] = p[1].add_child(p[2])
+
+def p_cost_part_tap(p):
+  'cost_part : TAP'
+  p[0] = unimplemented()
+
 def p_cost_number(p):
-  'cost : number'
+  'cost_part : number'
   p[0] = cost().add_child(p[1])
 
 def p_cost_color(p):
-  'cost : cost color'
+  'cost_part : color'
   p[0] = p[1].add_child(p[2])
-
-def p_cost_term(p):
-  'cost : color'
-  p[0] = cost().add_child(p[1])
 
 def p_color_white(p):
   'color : WHITE'
