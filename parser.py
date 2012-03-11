@@ -189,6 +189,10 @@ def p_text_affect(p):
   'text : text affect'
   p[0] = p[1].add_child(p[2])
 
+def p_text_ability(p):
+  'text : text ability'
+  p[0] = unimplemented()
+
 def p_text_cost(p):
   'text : cost'
   p[0] = p[1]
@@ -197,9 +201,21 @@ def p_text_none(p):
   'text : '
   p[0] = text()
 
+def p_ability_triggered(p):
+  'ability : trigger COMMA affect'
+  p[0] = unimplemented()
+
+def p_trigger_etb(p):
+  'trigger : WHENEVER object ENTERS THE BATTLEFIELD'
+  p[0] = unimplemented()
+
 def p_affect_damage(p):
   'affect : TILDE DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
+
+def p_object_a(p):
+  'object : A type'
+  p[0] = unimplemented()
 
 def p_object_target(p):
   'object : TARGET type'
@@ -215,6 +231,10 @@ def p_type_creature(p):
 
 def p_type_player(p):
   'type : PLAYER'
+  p[0] = p[1]
+
+def p_type_land(p):
+  'type : LAND'
   p[0] = p[1]
 
 def p_number_num(p):
@@ -265,12 +285,13 @@ if __name__ == '__main__':
   _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 10")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
-    for text, in _conn.fetchall():
+    for card_text, in _conn.fetchall():
+      import pdb;pdb.set_trace()
       try:
-        parse(name, text)
+        parse(name, card_text)
         print ".",
       except:
         print ""
         print name
-        print text
+        print card_text
         raise
