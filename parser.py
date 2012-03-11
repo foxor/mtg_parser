@@ -89,6 +89,7 @@ class BasicLand(AST):
     self.name = name
     self.color = color
     self.types = types
+    self.tapped = False
     super(BasicLand, self).__init__()
 
   def play(self, *args, **kwargs):
@@ -97,7 +98,11 @@ class BasicLand(AST):
       self.player.game.move_to_battlefield(self)
 
   def activate(self, *args, **kwargs):
-    self.player.mana_pool.append(self.color)
+    if not self.tapped:
+      self.player.mana_pool.append(self.color)
+      self.tapped = True
+    else:
+      print "Already Tapped"
 
 class ability(AST):
   pass
