@@ -204,12 +204,28 @@ def p_text_none(p):
   'text : '
   p[0] = text()
 
+def p_ability_static(p):
+  'ability : affect time'
+  p[0] = unimplemented()
+
 def p_ability_triggered(p):
   'ability : trigger COMMA affect'
   p[0] = unimplemented()
 
+def p_time_untap(p):
+  'time : DURING YOUR UNTAP STEP'
+  p[0] = unimplemented()
+
 def p_trigger_etb(p):
   'trigger : WHENEVER object ENTERS THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_doesnt(p):
+  'doesnt : DOESN APOSTROPHE T'
+  p[0] = None
+
+def p_affect_stay_tapped(p):
+  'affect : TILDE doesnt UNTAP'
   p[0] = unimplemented()
 
 def p_affect_damage(p):
