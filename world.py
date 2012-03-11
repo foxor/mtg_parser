@@ -122,6 +122,9 @@ class player(object):
   def activate(self, card_name, *args, **kwargs):
     card_code(card_name).play(self, *args, **kwargs)
 
+  def cards_in_play(self):
+    return set(itertools.chain(*[[y for y in self.battle_field[x]] for x in self.battle_field]))
+
   def choose_deck(self):
     for i in range(43):
       self.library.add_card(get_card_by_name("Lightning Bolt"))
@@ -195,7 +198,8 @@ class step(object):
     pass
   @staticmethod
   def untap(game):
-    pass
+    for permanent in game.get_active_player().cards_in_play():
+      permanent.tapped = False
   @staticmethod
   def begin_turn_trigger(game):
     pass
@@ -451,7 +455,7 @@ class game(object):
     self.get_active_player().play(card_name, *args, **kwargs)
 
   def activate(self, card_name, *args, **kwargs):
-    match = set(itertools.chain(*[[y for y in self.get_active_player().battle_field[x] if y.name == card_name] for x in self.get_active_player().battle_field]))
+    match = [x for x in self.get_active_player().cards_in_play() if x.name == card_name]
     self.get_active_player().choose(match).activate(*args, **kwargs)
 
   def get_active_player(self):
