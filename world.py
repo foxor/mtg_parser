@@ -24,16 +24,16 @@ def get_types_per_card(card):
 
 def interpert(name, text, types, card):
   if 'Basic' in types and 'Land' in types:
-    return BasicLand(name, text, types)
+    return (BasicLand, name, text, types)
   ast_text = parse(name.lower(), text.lower())
   ast_cost = parse(name.lower(), card[2].lower())
   print "="*80
-  print "CARD INFO"
+  print "NEW CARD INFO"
   print ast_cost
   print ast_text
   print "="*80
   if 'Instant' in types:
-    return Instant(ast_text, ast_cost, name)
+    return (Instant, ast_text, ast_cost, name)
   raise Exception("Not Implemented")
 
 _card_code = {}
@@ -44,7 +44,7 @@ def card_code(name):
     types = get_types_per_card(card)
     code = interpert(name, ' '.join([x[2] for x in rules]), [x[1] for x in types], card)
     _card_code[name] = code
-  return _card_code[name]
+  return _card_code[name][0](*_card_code[name][1:])
 
 class card_pile(object):
   def __init__(self, cards=None):
