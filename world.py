@@ -135,11 +135,15 @@ class player(object):
     self.life -= number
 
   def choose(self, choices):
+    choices = list(choices)
+    if not choices:
+      print "Impossible Choice"
+      return False
     print "="*80
     print "Choosing between: "
     print choices
     print "="*80
-    return list(choices)[-1]
+    return choices[-1]
 
   def approve_hand(self):
     print "Looking at a %s, keep?" % self.hand
@@ -183,6 +187,9 @@ class player(object):
     return "%s:%s" % (self.name, self.life)
 
 class step(object):
+  @staticmethod
+  def prep(game):
+    game.prep_turn()
   @staticmethod
   def phasing(game):
     pass
@@ -311,6 +318,7 @@ class phase(object):
 class begin_phase(phase):
   def __init__(p):
     super(begin_phase, p).__init__()
+    p.add_step(step.prep)
     p.add_step(step.phasing)
     p.add_step(step.untap)
     p.add_step(step.begin_turn_trigger)
@@ -379,7 +387,7 @@ class turn(object):
   def has_phase(self):
     return bool(self.phases)
   def pop_phase(self):
-    return self.phases.pop()
+    return self.phases.pop(0)
 
 class game(object):
   def __init__(self, players):
@@ -388,6 +396,7 @@ class game(object):
     self.triggers = []
     self.stack = []
     self.phases = []
+    self.land_effects = {'305.2': 0} # A mapping from the source of the continuous effect to how many times it has been invoked this turn
     self.targets = {'player': [x for x in players]}
     self.turn_stage = 0
     self.status_message = "Starting The Game"
@@ -401,6 +410,15 @@ class game(object):
   @staticmethod
   def repr_types_dict(**kwargs):
     return set(sum([[x.__repr__() for x in kwargs[y]] for y in kwargs], []))
+
+  def prep_turn(self):
+    self.land_effects = dict((x, 0) for x in self.land_effects)
+
+  def choose_land_effect(self):
+    effect = self.get_active_player().choose(x for x,y in self.land_effects.iteritems() if y == 0)
+    if effect:
+      self.land_effects[effect] += 1
+      return True
 
   def push_stack(self, spell):
     self.stack.append(spell)
@@ -449,7 +467,6 @@ class game(object):
     return False
 
   def turn_loop(self):
-    #import pdb;pdb.set_trace()
     while not self.game_over():
       active_turn = turn(self.get_active_player())
       while active_turn.has_phase():

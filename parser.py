@@ -93,7 +93,8 @@ class BasicLand(AST):
 
   def play(self, *args, **kwargs):
     self.player = kwargs['player']
-    self.player.game.move_to_battlefield(self)
+    if self.player.game.choose_land_effect():
+      self.player.game.move_to_battlefield(self)
 
   def activate(self, *args, **kwargs):
     self.player.mana_pool.append(self.color)
