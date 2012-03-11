@@ -416,7 +416,7 @@ class game(object):
     return set(sum([[x.__repr__() for x in kwargs[y]] for y in kwargs], []))
 
   def prep_turn(self):
-    self.active_player += 1
+    self.active_player = (self.active_player + 1) % len(self.players)
     self.land_effects = dict((x, 0) for x in self.land_effects)
 
   def choose_land_effect(self):
