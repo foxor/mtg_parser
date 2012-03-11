@@ -255,4 +255,18 @@ def parse(card_name, card_text):
   return parser.parse(lexer=tokenize(card_name, card_text))
 
 if __name__ == '__main__':
-  print parse("Lightning Bolt", "Lightning Bolt deals 3 damage to target creature or player")
+  import MySQLdb
+  from password import password
+  _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
+  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 10")
+  for id, name in _conn.fetchall():
+    _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
+    for text, in _conn.fetchall():
+      try:
+        parse(name, text)
+        print ".",
+      except:
+        print ""
+        print name
+        print text
+        raise
