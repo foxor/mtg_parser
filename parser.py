@@ -235,6 +235,10 @@ def p_affect_stay_tapped(p):
   'affect : TILDE doesnt UNTAP'
   p[0] = unimplemented()
 
+def p_affect_untap(p):
+  'affect : UNTAP TILDE'
+  p[0] = unimplemented()
+
 def p_affect_damage(p):
   'affect : TILDE DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
