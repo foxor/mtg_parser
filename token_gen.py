@@ -23,7 +23,7 @@ re_variable = re.compile(variable_colorless)
 number = r"^(\d*)$"
 re_number = re.compile(number)
 
-allowed_punctuation = "+/[]-"
+allowed_punctuation = "+/[]-,"
 
 disallowed = r"[^a-zA-Z0-9\s~" + re.escape(allowed_punctuation) + r"]"
 
@@ -71,7 +71,14 @@ tokens = (%s)
 
 %s
 
+allowed_punctuation = "+/[]-,"
 t_TILDE = r'~'
+t_COMMA = r','
+t_PLUS_SYMBOL = r'+'
+t_MINUS_SYMBOL = r'-'
+t_SLASH = r'/'
+t_OPEN_BRACKET = r'['
+t_CLOSE_BRACKET = r']'
 
 def t_NUM(t):
   r'\d+'
