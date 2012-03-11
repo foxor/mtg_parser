@@ -104,6 +104,10 @@ class BasicLand(AST):
     else:
       print "Already Tapped"
 
+class unimplemented(AST):
+  def walk(*args, **kwargs):
+    raise Exception("Not Implemented")
+
 class ability(AST):
   pass
 
