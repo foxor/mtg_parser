@@ -14,7 +14,7 @@ def get_cards():
     yield r[0], r[1]
     r = _conn.fetchone()
 
-word_seperator = r"[\s\[\]+-/ ]"
+word_seperator = r"[\[\]+-/ ]"
 re_sep = re.compile(word_seperator)
 
 variable_colorless = r"Variable Colorless"
@@ -22,6 +22,9 @@ re_variable = re.compile(variable_colorless)
 
 number = r"^(\d*)$"
 re_number = re.compile(number)
+
+apostrophe = r"'"
+re_apostrophe = re.compile(apostrophe)
 
 allowed_punctuation = "+/[]-,"
 
@@ -34,6 +37,7 @@ DEBUG = False
 def sanitize(card_name, card_text):
   transformed_text = re.sub(re_variable, "x", card_text)
   transformed_text = re.sub(card_name, "~", transformed_text)
+  transformed_text = re.sub(re_apostrophe, " apostrophe ", transformed_text)
   if "," in card_name:
     transformed_text = re.sub(card_name.split(',')[0], "~", transformed_text)
   transformed_text = re.sub(disallowed, "", transformed_text)
