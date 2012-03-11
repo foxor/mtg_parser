@@ -37,7 +37,7 @@ def sanitize(card_name, card_text):
   if "," in card_name:
     transformed_text = re.sub(card_name.split(',')[0], "~", transformed_text)
   transformed_text = re.sub(disallowed, "", transformed_text)
-  return transformed_text
+  return transformed_text.lower()
 
 def main():
   trans = string.maketrans("","")
@@ -46,7 +46,7 @@ def main():
   filters = [re_number]
   for card_text, card_name in get_cards():
     transformed_text = sanitize(card_name, card_text)
-    for word in re_sep.split(transformed_text.lower().translate(trans, punc)):
+    for word in re_sep.split(transformed_text.translate(trans, punc)):
       if any(x.match(word) for x in filters):
         #if DEBUG:
         #  print "IGNORING \t%s\t%s" % (word, card_name)
