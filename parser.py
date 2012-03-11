@@ -185,6 +185,9 @@ class black(color):
   def mana(*args, **kwargs):
     return "B"
 
+def p_error(p):
+  raise Exception("No Errors allowed: %s" % p)
+
 def p_text_affect(p):
   'text : text affect'
   p[0] = p[1].add_child(p[2])
@@ -213,6 +216,10 @@ def p_affect_damage(p):
   'affect : TILDE DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
+def p_object_backreference_controller(p):
+  'object : backref APOSTROPHE S CONTROLLER'
+  p[0] = unimplemented()
+
 def p_object_a(p):
   'object : A type'
   p[0] = unimplemented()
@@ -220,6 +227,10 @@ def p_object_a(p):
 def p_object_target(p):
   'object : TARGET type'
   p[0] = target(p[2])
+
+def p_backref(p):
+  'backref : THAT type'
+  p[0] = unimplemented()
 
 def p_type_choice(p):
   'type : type OR type'
@@ -286,12 +297,12 @@ if __name__ == '__main__':
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
-      import pdb;pdb.set_trace()
       try:
         parse(name, card_text)
         print ".",
-      except:
+      except Exception, e:
         print ""
         print name
-        print card_text
+        print '\n'.join(str(x) for x in tokenize(name, card_text))
+        import pdb;pdb.set_trace()
         raise
