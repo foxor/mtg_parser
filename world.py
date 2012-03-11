@@ -198,7 +198,7 @@ class step(object):
     pass
   @staticmethod
   def untap(game):
-    for permanent in game.get_active_player().cards_in_play():
+    for permanent in game.player().cards_in_play():
       permanent.tapped = False
   @staticmethod
   def begin_turn_trigger(game):
@@ -208,7 +208,7 @@ class step(object):
     pass
   @staticmethod
   def draw(game):
-    print "Drawing a %s, current hand is %s" % (game.get_active_player().draw_card(), game.get_active_player().get_hand())
+    print "Drawing a %s, current hand is %s" % (game.player().draw_card(), game.player().get_hand())
   @staticmethod
   def draw_trigger(game):
     pass
@@ -227,10 +227,10 @@ class step(object):
     done = None
     while not done:
       print "MOCK MENU"
-      print "Your hand: %s" % my_game.get_active_player().hand
+      print "Your hand: %s" % my_game.player().hand
       print "Valid targets: %s" % game.repr_types_dict(**my_game.targets)
-      print "Your battlefield: %s" % game.repr_types_dict(**my_game.get_active_player().battle_field)
-      print "Your mana pool: %s" % my_game.get_active_player().mana_pool
+      print "Your battlefield: %s" % game.repr_types_dict(**my_game.player().battle_field)
+      print "Your mana pool: %s" % my_game.player().mana_pool
       print "Do you wish to do anything?"
       choice = raw_input().split(':')
       if not choice[0]:
@@ -416,10 +416,11 @@ class game(object):
     return set(sum([[x.__repr__() for x in kwargs[y]] for y in kwargs], []))
 
   def prep_turn(self):
+    self.active_player += 1
     self.land_effects = dict((x, 0) for x in self.land_effects)
 
   def choose_land_effect(self):
-    effect = self.get_active_player().choose(x for x,y in self.land_effects.iteritems() if y == 0)
+    effect = self.player().choose(x for x,y in self.land_effects.iteritems() if y == 0)
     if effect:
       self.land_effects[effect] += 1
       return True
@@ -452,13 +453,13 @@ class game(object):
       card.player.battle_field[card_type] = card.player.battle_field.get(card_type, []) + [card]
 
   def play(self, card_name, *args, **kwargs):
-    self.get_active_player().play(card_name, *args, **kwargs)
+    self.player().play(card_name, *args, **kwargs)
 
   def activate(self, card_name, *args, **kwargs):
-    match = [x for x in self.get_active_player().cards_in_play() if x.name == card_name]
-    self.get_active_player().choose(match).activate(*args, **kwargs)
+    match = [x for x in self.player().cards_in_play() if x.name == card_name]
+    self.player().choose(match).activate(*args, **kwargs)
 
-  def get_active_player(self):
+  def player(self):
     return self.players[self.active_player]
 
   def stack_triggers(self, opportunity):
@@ -472,7 +473,7 @@ class game(object):
 
   def turn_loop(self):
     while not self.game_over():
-      active_turn = turn(self.get_active_player())
+      active_turn = turn(self.player())
       while active_turn.has_phase():
         active_phase = active_turn.pop_phase()
         while active_phase.has_step():
