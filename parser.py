@@ -227,6 +227,10 @@ def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
   p[0] = None
 
+def p_trigger_etb_choice(p):
+  'trigger : AS object etb'
+  p[0] = unimplemented()
+
 def p_trigger_etb(p):
   'trigger : WHENEVER object etb'
   p[0] = unimplemented()
@@ -234,6 +238,10 @@ def p_trigger_etb(p):
 def p_doesnt(p):
   'doesnt : DOESN APOSTROPHE T'
   p[0] = None
+
+def p_affect_memory(p):
+  'affect : CHOOSE object'
+  p[0] = unimplemented()
 
 def p_affect_stay_tapped(p):
   'affect : object doesnt UNTAP'
@@ -256,7 +264,8 @@ def p_object_backreference_controller(p):
   p[0] = unimplemented()
 
 def p_object_a(p):
-  'object : A type'
+  """object : A type
+            | AN type"""
   p[0] = unimplemented()
 
 def p_object_target(p):
@@ -281,6 +290,10 @@ def p_type_creature(p):
 
 def p_type_player(p):
   'type : PLAYER'
+  p[0] = p[1]
+
+def p_type_opponent(p):
+  'type : OPPONENT'
   p[0] = p[1]
 
 def p_type_land(p):
