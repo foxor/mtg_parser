@@ -74,11 +74,11 @@ tokens = (%s)
 allowed_punctuation = "+/[]-,"
 t_TILDE = r'~'
 t_COMMA = r','
-t_PLUS_SYMBOL = r'+'
+t_PLUS_SYMBOL = r'\+'
 t_MINUS_SYMBOL = r'-'
 t_SLASH = r'/'
-t_OPEN_BRACKET = r'['
-t_CLOSE_BRACKET = r']'
+t_OPEN_BRACKET = r'\['
+t_CLOSE_BRACKET = r'\]'
 
 def t_NUM(t):
   r'\d+'
@@ -96,7 +96,7 @@ def tokenize(card_name, card_text):
 if __name__ == '__main__':
   for token in tokenize("Lightning Bolt", "Lightning Bolt deals 3 damage to target creature or player"):
     print token
-""" % (",".join("'%s'" % x.upper() for x in sorted_words + ["NUM", "TILDE"]), "\n".join("t_%s = r'%s'" % (x.upper(), x) for x in sorted_words), word_seperator)
+""" % (",".join("'%s'" % x.upper() for x in sorted_words + ["NUM", "TILDE", "COMMA", "PLUS_SYMBOL", "MINUS_SYMBOL", "SLASH", "OPEN_BRACKET", "CLOSE_BRACKET"]), "\n".join("t_%s = r'%s'" % (x.upper(), x) for x in sorted_words), word_seperator)
 
 if __name__ == '__main__':
   main()
