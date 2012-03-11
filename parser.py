@@ -223,8 +223,12 @@ def p_time_untap(p):
   'time : DURING YOUR UNTAP STEP'
   p[0] = unimplemented()
 
+def p_etb(p):
+  'etb : ENTERS THE BATTLEFIELD'
+  p[0] = None
+
 def p_trigger_etb(p):
-  'trigger : WHENEVER object ENTERS THE BATTLEFIELD'
+  'trigger : WHENEVER object etb'
   p[0] = unimplemented()
 
 def p_doesnt(p):
