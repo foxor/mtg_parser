@@ -232,15 +232,15 @@ def p_doesnt(p):
   p[0] = None
 
 def p_affect_stay_tapped(p):
-  'affect : TILDE doesnt UNTAP'
+  'affect : object doesnt UNTAP'
   p[0] = unimplemented()
 
 def p_affect_untap(p):
-  'affect : UNTAP TILDE'
+  'affect : UNTAP object'
   p[0] = unimplemented()
 
 def p_affect_damage(p):
-  'affect : TILDE DEALS number DAMAGE TO object'
+  'affect : object DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
 def p_affect_add_mana(p):
@@ -258,6 +258,10 @@ def p_object_a(p):
 def p_object_target(p):
   'object : TARGET type'
   p[0] = target(p[2])
+
+def p_object_self(p):
+  'object : TILDE'
+  p[0] = unimplemented()
 
 def p_backref(p):
   'backref : THAT type'
@@ -283,6 +287,10 @@ def p_number_num(p):
   'number : NUM'
   p[0] = int(p[1])
 
+def p_number_three(p):
+  'number : THREE'
+  p[0] = 3
+
 def p_cost_term(p):
   'cost : cost_part'
   p[0] = p[1]
@@ -290,6 +298,18 @@ def p_cost_term(p):
 def p_cost_recur(p):
   'cost : cost cost_part'
   p[0] = p[1].add_child(p[2])
+
+def p_cost_cs(p):
+  'cost : cost COMMA cost_part'
+  p[0] = p[1].add_child(p[3])
+
+def p_cost_choice(p):
+  'cost : number MANA OF ANY ONE COLOR'
+  p[0] = unimplemented()
+
+def p_cost_sac(p):
+  'cost_part : SACRIFICE object'
+  p[0] = unimplemented()
 
 def p_cost_part_tap(p):
   'cost_part : TAP'
