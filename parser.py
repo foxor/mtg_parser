@@ -259,13 +259,20 @@ def p_affect_add_mana(p):
   'affect : ADD cost TO YOUR MANA POOL'
   p[0] = unimplemented()
 
+def p_a(p):
+  'a : A'
+  p[0] = None
+
+def p_an(p):
+  'a : AN'
+  p[0] = None
+
 def p_object_backreference_controller(p):
   'object : backref APOSTROPHE S CONTROLLER'
   p[0] = unimplemented()
 
 def p_object_a(p):
-  """object : A type
-            | AN type"""
+  "object : a type"
   p[0] = unimplemented()
 
 def p_object_target(p):
