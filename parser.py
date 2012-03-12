@@ -408,7 +408,7 @@ def p_cost_number(p):
 
 def p_cost_color(p):
   'cost_part : color'
-  p[0] = p[1].add_child(p[2])
+  p[0] = p[1]
 
 def p_color_white(p):
   'color : WHITE'
