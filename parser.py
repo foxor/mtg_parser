@@ -219,6 +219,10 @@ def p_ability_triggered(p):
 def p_ability_activated(p):
   'ability : cost COLON affect'
 
+def p_time_upkeep(p):
+  'time : AT THE BEGINNING OF object UPKEEP'
+  p[0] = unimplemented()
+
 def p_time_untap(p):
   'time : DURING YOUR UNTAP STEP'
   p[0] = unimplemented()
@@ -226,6 +230,10 @@ def p_time_untap(p):
 def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
   p[0] = None
+
+def p_trigger_time(p):
+  'trigger : time COMMA affect'
+  p[0] = unimplemented()
 
 def p_trigger_etb_choice(p):
   'trigger : AS object etb'
@@ -251,12 +259,36 @@ def p_affect_untap(p):
   'affect : UNTAP object'
   p[0] = unimplemented()
 
+def p_affect_where(p):
+  'affect : affect COMMA where'
+  p[0] = unimplemented()
+
 def p_affect_damage(p):
   'affect : object DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
 def p_affect_add_mana(p):
   'affect : ADD cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
+
+def p_where(p):
+  'where : WHERE X IS math_exp'
+  p[0] = unimplemented()
+
+def p_math_count(p):
+  'math_exp : THE NUMBER OF count'
+  p[0] = unimplemented()
+
+def p_math_minus(p):
+  'math_exp : math_exp MINUS math_exp'
+  p[0] = unimplemented()
+
+def p_math_const(p):
+  'math_exp : number'
+  p[0] = unimplemented()
+
+def p_count_cards_hand(p):
+  'count : CARDS IN object HAND'
   p[0] = unimplemented()
 
 def p_a(p):
@@ -266,6 +298,14 @@ def p_a(p):
 def p_an(p):
   'a : AN'
   p[0] = None
+
+def p_object_backreference(p):
+  'object : backref'
+  p[0] = unimplemented()
+
+def p_object_backreference_possessive(p):
+  'object : backref APOSTROPHE S'
+  p[0] = unimplemented()
 
 def p_object_backreference_controller(p):
   'object : backref APOSTROPHE S CONTROLLER'
@@ -283,8 +323,16 @@ def p_object_self(p):
   'object : TILDE'
   p[0] = unimplemented()
 
-def p_backref(p):
+def p_backref_chosen_player(p):
+  'backref : THE CHOSEN type'
+  p[0] = unimplemented()
+
+def p_backref_type(p):
   'backref : THAT type'
+  p[0] = unimplemented()
+
+def p_backref_gendered_player(p):
+  'backref : HIS OR HER'
   p[0] = unimplemented()
 
 def p_type_choice(p):
@@ -310,6 +358,10 @@ def p_type_land(p):
 def p_number_num(p):
   'number : NUM'
   p[0] = int(p[1])
+
+def p_number_x(p):
+  'number : X'
+  p[0] = unimplemented()
 
 def p_number_three(p):
   'number : THREE'
@@ -367,12 +419,14 @@ def p_color_black(p):
   'color : BLACK'
   p[0] = black
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 
 def parse(card_name, card_text):
   return parser.parse(lexer=tokenize(card_name, card_text))
 
 if __name__ == '__main__':
+  parse("Black Vise", "during your untap step, Black Vise deals 2 damage to target creature")
+  parse("Black Vise", "Black Vise deals 2 damage to target creature")
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
@@ -387,5 +441,4 @@ if __name__ == '__main__':
         print ""
         print name
         print '\n'.join(str(x) for x in tokenize(name, card_text))
-        import pdb;pdb.set_trace()
         raise
