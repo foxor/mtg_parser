@@ -1,13 +1,22 @@
 #!/usr/bin/env python
 
+import inspect
 import ply.yacc as yacc
 
 from token_out import tokens, tokenize
+
+DEBUG = False
 
 class AST(object):
   def __init__(self):
     self.children = []
     self.walk_results = []
+    if DEBUG:
+      stack = inspect.stack()
+      for frame in range(1, len(stack)):
+        if stack[frame][3] in globals() and ':' in globals()[stack[frame][3]].__doc__:
+          print globals()[stack[frame][3]].__doc__
+          break
 
   def walk(self, name, *args, **kwargs):
     if hasattr(self, "pre" + name):
@@ -188,6 +197,8 @@ class black(color):
 def p_error(p):
   raise Exception("No Errors allowed: %s" % p)
 
+start = "text"
+
 def p_text_term(p):
   'text : text_part'
   p[0] = p[1]
@@ -198,7 +209,7 @@ def p_text_recur(p):
 
 def p_text_affect(p):
   'text_part : affect'
-  p[0] = p[1].add_child(p[2])
+  p[0] = p[1]
 
 def p_text_ability(p):
   'text_part : ability'
@@ -232,7 +243,7 @@ def p_etb(p):
   p[0] = None
 
 def p_trigger_time(p):
-  'trigger : time COMMA affect'
+  'trigger : time'
   p[0] = unimplemented()
 
 def p_trigger_etb_choice(p):
@@ -380,7 +391,7 @@ def p_cost_cs(p):
   p[0] = p[1].add_child(p[3])
 
 def p_cost_choice(p):
-  'cost : number MANA OF ANY ONE COLOR'
+  'cost_part : number MANA OF ANY ONE COLOR'
   p[0] = unimplemented()
 
 def p_cost_sac(p):
@@ -425,8 +436,6 @@ def parse(card_name, card_text):
   return parser.parse(lexer=tokenize(card_name, card_text))
 
 if __name__ == '__main__':
-  parse("Black Vise", "during your untap step, Black Vise deals 2 damage to target creature")
-  parse("Black Vise", "Black Vise deals 2 damage to target creature")
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
