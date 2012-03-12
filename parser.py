@@ -374,9 +374,65 @@ def p_number_x(p):
   'number : X'
   p[0] = unimplemented()
 
+def p_number_one(p):
+  'number : ONE'
+  p[0] = 1
+
+def p_number_two(p):
+  'number : TWO'
+  p[0] = 2
+
 def p_number_three(p):
   'number : THREE'
   p[0] = 3
+
+def p_number_four(p):
+  'number : FOUR'
+  p[0] = 4
+
+def p_number_five(p):
+  'number : FIVE'
+  p[0] = 5
+
+def p_number_six(p):
+  'number : SIX'
+  p[0] = 6
+
+def p_number_seven(p):
+  'number : SEVEN'
+  p[0] = 7
+
+def p_number_eight(p):
+  'number : EIGHT'
+  p[0] = 8
+
+def p_number_nine(p):
+  'number : NINE'
+  p[0] = 9
+
+def p_number_ten(p):
+  'number : TEN'
+  p[0] = 10
+
+#def p_number_eleven(p):
+#  'number : ELEVEN'
+#  p[0] = 11
+
+def p_number_twelve(p):
+  'number : TWELVE'
+  p[0] = 12
+
+def p_number_thirteen(p):
+  'number : THIRTEEN'
+  p[0] = 13
+
+#def p_number_fourteen(p):
+#  'number : FOURTEEN'
+#  p[0] = 14
+
+def p_number_fifteen(p):
+  'number : FIFTEEN'
+  p[0] = 15
 
 def p_cost_term(p):
   'cost : cost_part'
@@ -391,6 +447,10 @@ def p_cost_cs(p):
   p[0] = p[1].add_child(p[3])
 
 def p_cost_choice(p):
+  'cost_part : number MANA OF ANY COLOR'
+  p[0] = unimplemented()
+
+def p_cost_choice_mult(p):
   'cost_part : number MANA OF ANY ONE COLOR'
   p[0] = unimplemented()
 
