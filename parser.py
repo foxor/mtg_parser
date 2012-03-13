@@ -258,6 +258,29 @@ def p_doesnt(p):
   'doesnt : DOESN APOSTROPHE T'
   p[0] = None
 
+def p_conditional_on_battlefield(p):
+  'conditional : TILDE IS ON THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_conditional_chaos_orb(p):
+  'conditional : TILDE TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
+  p[0] = unimplemented()
+
+def p_place_battlefield(p):
+  'place : BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_affect_destroy(p):
+  'affect : DESTROY object'
+
+def p_affect_filp(p):
+  'affect : FLIP TILDE ONTO THE place FROM A HEIGHT OF AT LEAST ONE FOOT'
+  p[0] = unimplemented()
+
+def p_affect_conditional(p):
+  'affect : IF conditional COMMA affect'
+  p[0] = unimplemented()
+
 def p_affect_memory(p):
   'affect : CHOOSE object'
   p[0] = unimplemented()
@@ -280,6 +303,10 @@ def p_affect_damage(p):
 
 def p_affect_add_mana(p):
   'affect : ADD cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
+
+def p_conjoined_affect(p):
+  'affect : affect THEN affect'
   p[0] = unimplemented()
 
 def p_where(p):
@@ -310,6 +337,14 @@ def p_an(p):
   'a : AN'
   p[0] = None
 
+def p_qualifier_chaos_orb(p):
+  'qualifier : IT TOUCHES'
+  p[0] = unimplemented()
+
+def p_object_all(p):
+  'object : ALL type'
+  p[0] = unimplemented()
+
 def p_object_backreference(p):
   'object : backref'
   p[0] = unimplemented()
@@ -324,6 +359,10 @@ def p_object_backreference_controller(p):
 
 def p_object_a(p):
   "object : a type"
+  p[0] = unimplemented()
+
+def p_object_qualified(p):
+  'object : object qualifier'
   p[0] = unimplemented()
 
 def p_object_target(p):
@@ -349,6 +388,14 @@ def p_backref_gendered_player(p):
 def p_type_choice(p):
   'type : type OR type'
   p[0] = player_choice(p[1], p[3])
+
+def p_type_permanent(p):
+  'type : PERMANENT'
+  p[0] = p[1]
+
+def p_type_permanent(p):
+  'type : PERMANENTS'
+  p[0] = p[1]
 
 def p_type_creature(p):
   'type : CREATURE'
