@@ -17,17 +17,21 @@ def get_cards():
 word_seperator = r"[\[\]+-/ ]"
 re_sep = re.compile(word_seperator)
 
-variable_colorless = r"Variable Colorless"
-re_variable = re.compile(variable_colorless)
-
 number = r"^(\d*)$"
 re_number = re.compile(number)
 
-apostrophe = r"'"
-re_apostrophe = re.compile(apostrophe)
-
-colon = r':'
-re_colon = re.compile(colon)
+replacements = {
+  re.compile(r"Variable Colorless"): "x",
+  re.compile(r"'"): " apostrophe ",
+  re.compile(r":"): " colon ",
+  re.compile(r"\+"): "plus ",
+  re.compile(r"-"): " minus ",
+  re.compile(r"\."): " period ",
+  re.compile(r"/"): " slash ",
+  re.compile(r"\["): " open_bracket ",
+  re.compile(r"\]"): " close_bracket ",
+  re.compile(r","): " comma ",
+}
 
 allowed_punctuation = "+/[]-,:"
 
@@ -38,14 +42,16 @@ DEBUG = False
 #DEBUG = True
 
 def sanitize(card_name, card_text):
-  transformed_text = re.sub(re_variable, "x", card_text)
-  transformed_text = re.sub(card_name, "~", transformed_text)
-  transformed_text = re.sub(re_apostrophe, " apostrophe ", transformed_text)
-  transformed_text = re.sub(re_colon, " colon ", transformed_text)
+  # Name based substitutions take precidence
+  card_text = re.sub(card_name, "~", card_text)
   if "," in card_name:
-    transformed_text = re.sub(card_name.split(',')[0], "~", transformed_text)
-  transformed_text = re.sub(disallowed, "", transformed_text)
-  return transformed_text.lower()
+    card_text = re.sub(card_name.split(',')[0], " tilde ", card_text)
+
+  # Pull semantically significant punctuation into words that can be lexed by the same process as the rest of the card
+  for regex, sub in replacements.iteritems():
+    card_text = re.sub(regex, sub, card_text)
+  card_text = re.sub(disallowed, "", card_text)
+  return card_text.lower()
 
 def main():
   trans = string.maketrans("","")
@@ -79,15 +85,6 @@ tokens = (%s)
 
 %s
 
-allowed_punctuation = "+/[]-,"
-t_TILDE = r'~'
-t_COMMA = r','
-t_PLUS_SYMBOL = r'\+'
-t_MINUS_SYMBOL = r'-'
-t_SLASH = r'/'
-t_OPEN_BRACKET = r'\['
-t_CLOSE_BRACKET = r'\]'
-
 def t_NUM(t):
   r'\d+'
   t.value = int(t.value)
@@ -104,7 +101,7 @@ def tokenize(card_name, card_text):
 if __name__ == '__main__':
   for token in tokenize("Lightning Bolt", "Lightning Bolt deals 3 damage to target creature or player"):
     print token
-""" % (",".join("'%s'" % x.upper() for x in sorted_words + ["NUM", "TILDE", "COMMA", "PLUS_SYMBOL", "MINUS_SYMBOL", "SLASH", "OPEN_BRACKET", "CLOSE_BRACKET"]), "\n".join("t_%s = r'%s'" % (x.upper(), x) for x in sorted_words), word_seperator)
+""" % (",".join("'%s'" % x.upper() for x in sorted_words + ["NUM"]), "\n".join("t_%s = r'%s'" % (x.upper(), x) for x in sorted_words), word_seperator)
 
 if __name__ == '__main__':
   main()
