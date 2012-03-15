@@ -43,7 +43,7 @@ DEBUG = False
 
 def sanitize(card_name, card_text):
   # Name based substitutions take precidence
-  card_text = re.sub(card_name, "~", card_text)
+  card_text = re.sub(card_name, " tilde ", card_text)
   if "," in card_name:
     card_text = re.sub(card_name.split(',')[0], " tilde ", card_text)
 

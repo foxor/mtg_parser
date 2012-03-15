@@ -203,9 +203,9 @@ def p_text_term(p):
   'text : text_part'
   p[0] = p[1]
 
-def p_text_recur(p):
-  'text : text text_part'
-  p[0] = p[1].add_child(p[2])
+#def p_text_recur(p):
+#  'text : text text_part'
+#  p[0] = p[1].add_child(p[2])
 
 def p_text_affect(p):
   'text_part : affect'
@@ -219,16 +219,41 @@ def p_text_cost(p):
   'text_part : cost'
   p[0] = p[1]
 
-def p_ability_static(p):
-  'ability : affect time'
+def p_ability_recur(p):
+  'ability : ability ability'
+  p[0] = unimplemented()
+
+def p_conjoined_ability(p):
+  'ability : ability THEN ability'
+  p[0] = unimplemented()
+
+def p_ability(p):
+  'ability : ability_part PERIOD'
   p[0] = unimplemented()
 
 def p_ability_triggered(p):
-  'ability : trigger COMMA affect'
+  'ability_part : trigger COMMA affect'
+  p[0] = unimplemented()
+
+def p_ability_triggered_nonstack(p):
+  'ability_part : trigger WITH affect'
   p[0] = unimplemented()
 
 def p_ability_activated(p):
-  'ability : cost COLON affect'
+  'ability_part : cost COLON ability_part'
+  p[0] = unimplemented()
+
+def p_ability_static(p):
+  'ability_part : affect time'
+  p[0] = unimplemented()
+
+def p_ability_conditional(p):
+  'ability_part : IF conditional COMMA affect'
+  p[0] = unimplemented()
+
+def p_ability_affect(p):
+  'ability_part : affect'
+  p[0] = unimplemented()
 
 def p_time_upkeep(p):
   'time : AT THE BEGINNING OF object UPKEEP'
@@ -244,6 +269,10 @@ def p_etb(p):
 
 def p_trigger_time(p):
   'trigger : time'
+  p[0] = unimplemented()
+
+def p_trigger_etb_self(p):
+  'trigger : TILDE etb'
   p[0] = unimplemented()
 
 def p_trigger_etb_choice(p):
@@ -270,43 +299,44 @@ def p_place_battlefield(p):
   'place : BATTLEFIELD'
   p[0] = unimplemented()
 
-def p_affect_destroy(p):
-  'affect : DESTROY object'
-
-def p_affect_filp(p):
-  'affect : FLIP TILDE ONTO THE place FROM A HEIGHT OF AT LEAST ONE FOOT'
+def p_affect_term(p):
+  'affect : affect_part'
   p[0] = unimplemented()
 
-def p_affect_conditional(p):
-  'affect : IF conditional COMMA affect'
+def p_affect_recur(p):
+  'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_destroy(p):
+  'affect_part : DESTROY object'
+  p[0] = unimplemented()
+
+def p_affect_filp(p):
+  'affect_part : FLIP TILDE ONTO THE place FROM A HEIGHT OF AT LEAST ONE FOOT'
   p[0] = unimplemented()
 
 def p_affect_memory(p):
-  'affect : CHOOSE object'
+  'affect_part : CHOOSE object'
   p[0] = unimplemented()
 
 def p_affect_stay_tapped(p):
-  'affect : object doesnt UNTAP'
+  'affect_part : object doesnt UNTAP'
   p[0] = unimplemented()
 
 def p_affect_untap(p):
-  'affect : UNTAP object'
+  'affect_part : UNTAP object'
   p[0] = unimplemented()
 
 def p_affect_where(p):
-  'affect : affect COMMA where'
+  'affect_part : affect COMMA where'
   p[0] = unimplemented()
 
 def p_affect_damage(p):
-  'affect : object DEALS number DAMAGE TO object'
+  'affect_part : object DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
 def p_affect_add_mana(p):
-  'affect : ADD cost TO YOUR MANA POOL'
-  p[0] = unimplemented()
-
-def p_conjoined_affect(p):
-  'affect : affect THEN affect'
+  'affect_part : ADD cost TO YOUR MANA POOL'
   p[0] = unimplemented()
 
 def p_where(p):
@@ -417,6 +447,10 @@ def p_number_num(p):
   'number : NUM'
   p[0] = int(p[1])
 
+def p_number_bracketed(p):
+  'number : OPENBRACKET OPENBRACKET OPENBRACKET NUM CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
+  p[0] = int(p[4])
+
 def p_number_x(p):
   'number : X'
   p[0] = unimplemented()
@@ -506,7 +540,7 @@ def p_cost_sac(p):
   p[0] = unimplemented()
 
 def p_cost_part_tap(p):
-  'cost_part : TAP'
+  'cost_part : OPENBRACKET OPENBRACKET OPENBRACKET TAP CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
   p[0] = unimplemented()
 
 def p_cost_number(p):
