@@ -551,6 +551,10 @@ def p_cost_color(p):
   'cost_part : color'
   p[0] = p[1]
 
+def p_cost_color_bracket(p):
+  'cost_part : OPENBRACKET OPENBRACKET OPENBRACKET color CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
+  p[0] = p[4]
+
 def p_color_white(p):
   'color : WHITE'
   p[0] = white()
