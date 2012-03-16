@@ -263,6 +263,10 @@ def p_time_untap(p):
   'time : DURING YOUR UNTAP STEP'
   p[0] = unimplemented()
 
+def p_time_end_combat(p):
+  'time : AT END OF COMBAT'
+  p[0] = unimplemented()
+
 def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
   p[0] = None
