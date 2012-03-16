@@ -299,12 +299,28 @@ def p_place_battlefield(p):
   'place : BATTLEFIELD'
   p[0] = unimplemented()
 
+def p_counter_word(p):
+  'counter_word : COUNTER'
+  p[0] = None
+
+def p_counter_word_plural(p):
+  'counter_word : COUNTERS'
+  p[0] = None
+
+def p_counter_pt_mod(p):
+  'counter : math_exp SLASH math_exp counter_word'
+  p[0] = unimplemented()
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
 
 def p_affect_recur(p):
   'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_counters(p):
+  'affect_part : math_exp counter ON object'
   p[0] = unimplemented()
 
 def p_affect_destroy(p):
@@ -351,6 +367,10 @@ def p_math_minus(p):
   'math_exp : math_exp MINUS math_exp'
   p[0] = unimplemented()
 
+def p_math_unary_plus(p):
+  'math_exp : PLUS number'
+  p[0] = unimplemented()
+
 def p_math_const(p):
   'math_exp : number'
   p[0] = unimplemented()
@@ -359,20 +379,12 @@ def p_count_cards_hand(p):
   'count : CARDS IN object HAND'
   p[0] = unimplemented()
 
-def p_a(p):
-  'a : A'
-  p[0] = None
-
-def p_an(p):
-  'a : AN'
-  p[0] = None
-
 def p_qualifier_chaos_orb(p):
   'qualifier : IT TOUCHES'
   p[0] = unimplemented()
 
-def p_object_all(p):
-  'object : ALL type'
+def p_object_num(p):
+  'object : math_exp type'
   p[0] = unimplemented()
 
 def p_object_backreference(p):
@@ -385,10 +397,6 @@ def p_object_backreference_possessive(p):
 
 def p_object_backreference_controller(p):
   'object : backref APOSTROPHE S CONTROLLER'
-  p[0] = unimplemented()
-
-def p_object_a(p):
-  "object : a type"
   p[0] = unimplemented()
 
 def p_object_qualified(p):
@@ -413,6 +421,10 @@ def p_backref_type(p):
 
 def p_backref_gendered_player(p):
   'backref : HIS OR HER'
+  p[0] = unimplemented()
+
+def p_backref_it(p):
+  'backref : IT'
   p[0] = unimplemented()
 
 def p_type_choice(p):
@@ -450,6 +462,18 @@ def p_number_num(p):
 def p_number_bracketed(p):
   'number : OPENBRACKET OPENBRACKET OPENBRACKET NUM CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
   p[0] = int(p[4])
+
+def p_num_all(p):
+  'number : ALL'
+  p[0] = unimplemented()
+
+def p_num_a(p):
+  'number : A'
+  p[0] = 1
+
+def p_num_an(p):
+  'number : AN'
+  p[0] = None
 
 def p_number_x(p):
   'number : X'
