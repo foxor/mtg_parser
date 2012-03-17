@@ -5,7 +5,7 @@ import ply.yacc as yacc
 
 from token_out import tokens, tokenize
 
-DEBUG = False
+DEBUG = True
 
 class AST(object):
   def __init__(self):
@@ -247,10 +247,6 @@ def p_ability_static(p):
   'ability_part : affect time'
   p[0] = unimplemented()
 
-def p_ability_conditional(p):
-  'ability_part : IF conditional COMMA affect'
-  p[0] = unimplemented()
-
 def p_ability_affect(p):
   'ability_part : affect'
   p[0] = unimplemented()
@@ -291,12 +287,40 @@ def p_doesnt(p):
   'doesnt : DOESN APOSTROPHE T'
   p[0] = None
 
+def p_action_attack(p):
+  'action : ATTACKED'
+  p[0] = unimplemented()
+
+def p_action_blocked(p):
+  'action : BLOCKED'
+  p[0] = unimplemented()
+
+def p_conditional(p):
+  'conditional : object conditional_part'
+  p[0] = unimplemented()
+
+def p_conditional_time(p):
+  'conditional_part : ATTACKED OR BLOCKED THIS COMBAT'
+  p[0] = unimplemented()
+
+#def p_conditional_time(p):
+#  'conditional_part : conditional_part time'
+#  p[0] = unimplemented()
+
+def p_contional_or(p):
+  'conditional_part : conditional_part OR conditional_part'
+  p[0] = unimplemented()
+
+def p_conditional_action(p):
+  'conditional_part : action'
+  p[0] = unimplemented()
+
 def p_conditional_on_battlefield(p):
-  'conditional : TILDE IS ON THE BATTLEFIELD'
+  'conditional_part : IS ON THE BATTLEFIELD'
   p[0] = unimplemented()
 
 def p_conditional_chaos_orb(p):
-  'conditional : TILDE TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
+  'conditional_part : TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
   p[0] = unimplemented()
 
 def p_place_battlefield(p):
@@ -323,8 +347,16 @@ def p_affect_recur(p):
   'affect : affect affect_part'
   p[0] = unimplemented()
 
+def p_affect_conditional(p):
+  'affect_part : IF conditional COMMA affect'
+  p[0] = unimplemented()
+
 def p_affect_counters(p):
   'affect_part : math_exp counter ON object'
+  p[0] = unimplemented()
+
+def p_affect_remove_counters(p):
+  'affect_part : REMOVE math_exp counter FROM object'
   p[0] = unimplemented()
 
 def p_affect_destroy(p):
