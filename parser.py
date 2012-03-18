@@ -5,7 +5,7 @@ import ply.yacc as yacc
 
 from token_out import tokens, tokenize
 
-DEBUG = False
+DEBUG = True
 
 class AST(object):
   def __init__(self):
@@ -263,6 +263,14 @@ def p_status_counter_count(p):
   'status : THE TOTAL NUMBER OF counter ON object'
   p[0] = unimplemented()
 
+def p_time_persistant(p):
+  'time : time FOR THE REST OF THE GAME'
+  p[0] = unimplemented()
+
+def p_time_each_upkeep(p):
+  'time : EACH OF object UPKEEPS'
+  p[0] = unimplemented()
+
 def p_time_upkeep(p):
   'time : object UPKEEP'
   p[0] = unimplemented()
@@ -281,7 +289,11 @@ def p_time_end_combat(p):
 
 def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
-  p[0] = None
+  p[0] = unimplemented()
+
+def p_ltb(p):
+  'ltb : IS PUT INTO A GRAVEYARD FROM THE BATTLEFIELD'
+  p[0] = unimplemented()
 
 def p_trigger_time(p):
   'trigger : time'
@@ -297,6 +309,10 @@ def p_trigger_etb_choice(p):
 
 def p_trigger_etb(p):
   'trigger : WHENEVER object etb'
+  p[0] = unimplemented()
+
+def p_trigger_ltb(p):
+  'trigger : WHEN object ltb'
   p[0] = unimplemented()
 
 def p_trigger_cast(p):
@@ -321,6 +337,14 @@ def p_action_blocked(p):
 
 def p_conditional(p):
   'conditional : object conditional_part'
+  p[0] = unimplemented()
+
+def p_conditional_cyclopean(p):
+  'conditional_part : THAT math_exp counter WAS PUT ONTO WITH object'
+  p[0] = unimplemented()
+
+def p_conditional_cyclopean_2(p):
+  'conditional_part : BUT THAT math_exp counter HAS NOT BEEN REMOVED FROM WITH object'
   p[0] = unimplemented()
 
 def p_conditional_time(p):
@@ -381,6 +405,10 @@ def p_affect_term(p):
 
 def p_affect_recur(p):
   'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_schedule_trigger(p):
+  'affect_part : trigger COMMA affect'
   p[0] = unimplemented()
 
 def p_affect_becomes_type(p):
@@ -485,6 +513,10 @@ def p_count_cards_hand(p):
 
 def p_qualifier_chaos_orb(p):
   'qualifier : IT TOUCHES'
+  p[0] = unimplemented()
+
+def p_object_conditional(p):
+  'object : conditional'
   p[0] = unimplemented()
 
 def p_object_num(p):
