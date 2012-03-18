@@ -383,6 +383,10 @@ def p_affect_remove_counters(p):
   'affect_part : REMOVE math_exp counter FROM object'
   p[0] = unimplemented()
 
+def p_affect_prevent_next(p):
+  'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object THIS TURN'
+  p[0] = unimplemented()
+
 def p_affect_destroy(p):
   'affect_part : DESTROY object'
   p[0] = unimplemented()
@@ -497,6 +501,10 @@ def p_backref_it(p):
 
 def p_backref_your(p):
   'backref : YOUR'
+  p[0] = unimplemented()
+
+def p_backref_you(p):
+  'backref : YOU'
   p[0] = unimplemented()
 
 def p_type_choice(p):
