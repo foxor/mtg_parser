@@ -5,7 +5,7 @@ import ply.yacc as yacc
 
 from token_out import tokens, tokenize
 
-DEBUG = True
+DEBUG = False
 
 class AST(object):
   def __init__(self):
@@ -251,7 +251,23 @@ def p_ability_affect(p):
   'ability_part : affect'
   p[0] = unimplemented()
 
+def p_ability_activate_restriction(p):
+  'ability_part : ACTIVATE THIS ABILITY ONLY DURING time'
+  p[0] = unimplemented()
+
+def p_ability_resolution_restriction(p):
+  'ability_part : THIS ABILITY cant CAUSE status TO BE math_exp'
+  p[0] = unimplemented()
+
+def p_status_counter_count(p):
+  'status : THE TOTAL NUMBER OF counter ON object'
+  p[0] = unimplemented()
+
 def p_time_upkeep(p):
+  'time : object UPKEEP'
+  p[0] = unimplemented()
+
+def p_time_upkeep_start(p):
   'time : AT THE BEGINNING OF object UPKEEP'
   p[0] = unimplemented()
 
@@ -282,6 +298,10 @@ def p_trigger_etb_choice(p):
 def p_trigger_etb(p):
   'trigger : WHENEVER object etb'
   p[0] = unimplemented()
+
+def p_cant(p):
+  'cant : CAN APOSTROPHE T'
+  p[0] = None
 
 def p_doesnt(p):
   'doesnt : DOESN APOSTROPHE T'
@@ -355,6 +375,10 @@ def p_affect_counters(p):
   'affect_part : math_exp counter ON object'
   p[0] = unimplemented()
 
+def p_affect_put_counters(p):
+  'affect_part : PUT math_exp counter ON object'
+  p[0] = unimplemented()
+
 def p_affect_remove_counters(p):
   'affect_part : REMOVE math_exp counter FROM object'
   p[0] = unimplemented()
@@ -395,8 +419,16 @@ def p_where(p):
   'where : WHERE X IS math_exp'
   p[0] = unimplemented()
 
+def p_math_gt(p):
+  'math_exp : GREATER THAN math_exp'
+  p[0] = unimplemented()
+
 def p_math_count(p):
   'math_exp : THE NUMBER OF count'
+  p[0] = unimplemented()
+
+def p_math_choose_up_to(p):
+  'math_exp : UP TO math_exp'
   p[0] = unimplemented()
 
 def p_math_minus(p):
@@ -463,6 +495,10 @@ def p_backref_it(p):
   'backref : IT'
   p[0] = unimplemented()
 
+def p_backref_your(p):
+  'backref : YOUR'
+  p[0] = unimplemented()
+
 def p_type_choice(p):
   'type : type OR type'
   p[0] = player_choice(p[1], p[3])
@@ -496,8 +532,8 @@ def p_number_num(p):
   p[0] = int(p[1])
 
 def p_number_bracketed(p):
-  'number : OPENBRACKET OPENBRACKET OPENBRACKET NUM CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
-  p[0] = int(p[4])
+  'number : OPENBRACKET OPENBRACKET OPENBRACKET number CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
+  p[0] = p[4]
 
 def p_num_all(p):
   'number : ALL'
