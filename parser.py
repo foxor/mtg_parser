@@ -268,7 +268,7 @@ def p_time_upkeep(p):
   p[0] = unimplemented()
 
 def p_time_upkeep_start(p):
-  'time : AT THE BEGINNING OF object UPKEEP'
+  'time : AT THE BEGINNING OF time'
   p[0] = unimplemented()
 
 def p_time_untap(p):
@@ -479,6 +479,10 @@ def p_object_target(p):
   'object : TARGET type'
   p[0] = target(p[2])
 
+def p_object_each(p):
+  'object : EACH type'
+  p[0] = unimplemented()
+
 def p_object_self(p):
   'object : TILDE'
   p[0] = unimplemented()
@@ -522,6 +526,10 @@ def p_type_permanent(p):
 def p_type_creature(p):
   'type : CREATURE'
   p[0] = p[1]
+
+def p_type_players(p):
+  'type : PLAYER APOSTROPHE S'
+  p[0] = unimplemented()
 
 def p_type_player(p):
   'type : PLAYER'
