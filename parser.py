@@ -252,7 +252,7 @@ def p_ability_affect(p):
   p[0] = unimplemented()
 
 def p_ability_activate_restriction(p):
-  'ability_part : ACTIVATE THIS ABILITY ONLY DURING time'
+  'ability_part : ACTIVATE THIS ABILITY ONLY time'
   p[0] = unimplemented()
 
 def p_ability_resolution_restriction(p):
@@ -275,16 +275,20 @@ def p_time_upkeep(p):
   'time : object UPKEEP'
   p[0] = unimplemented()
 
-def p_time_upkeep_start(p):
+def p_time_beginning_start(p):
   'time : AT THE BEGINNING OF time'
   p[0] = unimplemented()
 
+def p_time_during(p):
+  'time : DURING time'
+  p[0] = unimplemented()
+
 def p_time_untap(p):
-  'time : DURING object UNTAP STEP'
+  'time : object UNTAP STEP'
   p[0] = unimplemented()
 
 def p_time_turn(p):
-  'time : DURING object TURN'
+  'time : object TURN'
   p[0] = unimplemented()
 
 def p_time_end_combat(p):
