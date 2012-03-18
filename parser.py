@@ -299,6 +299,10 @@ def p_trigger_etb(p):
   'trigger : WHENEVER object etb'
   p[0] = unimplemented()
 
+def p_trigger_cast(p):
+  'trigger : WHENEVER object CASTS A color SPELL'
+  p[0] = unimplemented()
+
 def p_cant(p):
   'cant : CAN APOSTROPHE T'
   p[0] = None
@@ -335,6 +339,10 @@ def p_conditional_action(p):
   'conditional_part : action'
   p[0] = unimplemented()
 
+def p_conditional_backref_action(p):
+  'conditional_part : DO'
+  p[0] = unimplemented()
+
 def p_conditional_on_battlefield(p):
   'conditional_part : IS ON THE BATTLEFIELD'
   p[0] = unimplemented()
@@ -367,6 +375,10 @@ def p_affect_recur(p):
   'affect : affect affect_part'
   p[0] = unimplemented()
 
+def p_affect_resolve_cost(p):
+  'affect_part : object MAY PAY cost'
+  p[0] = unimplemented()
+
 def p_affect_conditional(p):
   'affect_part : IF conditional COMMA affect'
   p[0] = unimplemented()
@@ -381,6 +393,10 @@ def p_affect_put_counters(p):
 
 def p_affect_remove_counters(p):
   'affect_part : REMOVE math_exp counter FROM object'
+  p[0] = unimplemented()
+
+def p_affect_life_gain(p):
+  'affect_part : object GAIN math_exp LIFE'
   p[0] = unimplemented()
 
 def p_affect_prevent_next(p):
