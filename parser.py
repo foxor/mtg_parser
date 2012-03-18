@@ -347,6 +347,10 @@ def p_conditional_on_battlefield(p):
   'conditional_part : IS ON THE BATTLEFIELD'
   p[0] = unimplemented()
 
+def p_conditional_has_counter(p):
+  'conditional_part : HAS A counter ON IT'
+  p[0] = unimplemented()
+
 def p_conditional_chaos_orb(p):
   'conditional_part : TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
   p[0] = unimplemented()
@@ -367,12 +371,24 @@ def p_counter_pt_mod(p):
   'counter : math_exp SLASH math_exp counter_word'
   p[0] = unimplemented()
 
+def p_counter_mire(p):
+  'counter : MIRE counter_word'
+  p[0] = unimplemented()
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
 
 def p_affect_recur(p):
   'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_becomes_type(p):
+  'affect_part : object IS a type'
+  p[0] = unimplemented()
+
+def p_affect_time_restriction(p):
+  'affect_part : FOR AS LONG AS conditional'
   p[0] = unimplemented()
 
 def p_affect_resolve_cost(p):
@@ -531,6 +547,10 @@ def p_type_choice(p):
   'type : type OR type'
   p[0] = player_choice(p[1], p[3])
 
+def p_type_exclude(p):
+  'type : NON MINUS type type'
+  p[0] = unimplemented()
+
 def p_type_permanent(p):
   'type : PERMANENT'
   p[0] = p[1]
@@ -559,6 +579,18 @@ def p_type_land(p):
   'type : LAND'
   p[0] = p[1]
 
+def p_type_swamp(p):
+  'type : SWAMP'
+  p[0] = p[1]
+
+def p_a(p):
+  'a : A'
+  p[0] = unimplemented()
+
+def p_an(p):
+  'a : AN'
+  p[0] = unimplemented()
+
 def p_number_num(p):
   'number : NUM'
   p[0] = int(p[1])
@@ -572,12 +604,8 @@ def p_num_all(p):
   p[0] = unimplemented()
 
 def p_num_a(p):
-  'number : A'
+  'number : a'
   p[0] = 1
-
-def p_num_an(p):
-  'number : AN'
-  p[0] = None
 
 def p_number_x(p):
   'number : X'
@@ -712,7 +740,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 10")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 20")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
