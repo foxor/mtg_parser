@@ -280,7 +280,11 @@ def p_time_upkeep_start(p):
   p[0] = unimplemented()
 
 def p_time_untap(p):
-  'time : DURING YOUR UNTAP STEP'
+  'time : DURING object UNTAP STEP'
+  p[0] = unimplemented()
+
+def p_time_turn(p):
+  'time : DURING object TURN'
   p[0] = unimplemented()
 
 def p_time_end_combat(p):
@@ -293,6 +297,14 @@ def p_etb(p):
 
 def p_ltb(p):
   'ltb : IS PUT INTO A GRAVEYARD FROM THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_when(p):
+  'when : WHEN'
+  p[0] = unimplemented()
+
+def p_whenever(p):
+  'when : WHENEVER'
   p[0] = unimplemented()
 
 def p_trigger_time(p):
@@ -308,15 +320,15 @@ def p_trigger_etb_choice(p):
   p[0] = unimplemented()
 
 def p_trigger_etb(p):
-  'trigger : WHENEVER object etb'
+  'trigger : when object etb'
   p[0] = unimplemented()
 
 def p_trigger_ltb(p):
-  'trigger : WHEN object ltb'
+  'trigger : when object ltb'
   p[0] = unimplemented()
 
 def p_trigger_cast(p):
-  'trigger : WHENEVER object CASTS A color SPELL'
+  'trigger : when object CASTS A color SPELL'
   p[0] = unimplemented()
 
 def p_cant(p):
@@ -477,6 +489,18 @@ def p_affect_damage(p):
 
 def p_affect_add_mana(p):
   'affect_part : ADD cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
+
+def p_affect_discard(p):
+  'affect_part : object DISCARDS math_exp card'
+  p[0] = unimplemented()
+
+def p_card(p):
+  'card : CARD'
+  p[0] = unimplemented()
+
+def p_cards(p):
+  'card : CARDS'
   p[0] = unimplemented()
 
 def p_where(p):
