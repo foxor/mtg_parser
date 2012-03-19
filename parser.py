@@ -263,8 +263,28 @@ def p_status_counter_count(p):
   'status : THE TOTAL NUMBER OF counter ON object'
   p[0] = unimplemented()
 
+def p_damage_type_standard(p):
+  'damage_type : DAMAGE'
+  p[0] = unimplemented()
+
+def p_damage_type_combat(p):
+  'damage_type : COMBAT DAMAGE'
+  p[0] = unimplemented()
+
+def p_event_unblocked(p):
+  'event : object WOULD DEAL damage_type TO object'
+  p[0] = unimplemented()
+
 def p_time_persistant(p):
   'time : time FOR THE REST OF THE GAME'
+  p[0] = unimplemented()
+
+def p_time_till_eot(p):
+  'time : time THIS TURN'
+  p[0] = unimplemented()
+
+def p_trigger_next(p):
+  'time : THE NEXT TIME event'
   p[0] = unimplemented()
 
 def p_time_each_upkeep(p):
@@ -463,6 +483,10 @@ def p_affect_prevent_next(p):
   'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object THIS TURN'
   p[0] = unimplemented()
 
+def p_affect_prevent_backref(p):
+  'affect_part : PREVENT math_exp OF THAT DAMAGE'
+  p[0] = unimplemented()
+
 def p_affect_destroy(p):
   'affect_part : DESTROY object'
   p[0] = unimplemented()
@@ -527,6 +551,10 @@ def p_math_minus(p):
   'math_exp : math_exp MINUS math_exp'
   p[0] = unimplemented()
 
+def p_math_double_negative(p):
+  'math_exp : math_exp BUT math_exp'
+  p[0] = unimplemented()
+
 def p_math_unary_plus(p):
   'math_exp : PLUS number'
   p[0] = unimplemented()
@@ -541,6 +569,14 @@ def p_count_cards_hand(p):
 
 def p_qualifier_chaos_orb(p):
   'qualifier : IT TOUCHES'
+  p[0] = unimplemented()
+
+def p_qualifier_unblocked(p):
+  'qualifier : AN UNBLOCKED'
+  p[0] = unimplemented()
+
+def p_qualifier_chosen(p):
+  'qualifier : OF object CHOICE'
   p[0] = unimplemented()
 
 def p_object_conditional(p):
@@ -561,6 +597,10 @@ def p_object_backreference_possessive(p):
 
 def p_object_backreference_controller(p):
   'object : backref APOSTROPHE S CONTROLLER'
+  p[0] = unimplemented()
+
+def p_object_prequalified_type(p):
+  'object : qualifier type'
   p[0] = unimplemented()
 
 def p_object_qualified(p):
