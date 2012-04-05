@@ -355,6 +355,10 @@ def p_trigger_cast(p):
   'trigger : when object CASTS A color SPELL'
   p[0] = unimplemented()
 
+def p_trigger__mana_tapped(p):
+  'trigger : when object IS TAPPED FOR MANA'
+  p[0] = unimplemented()
+
 def p_cant(p):
   'cant : CAN APOSTROPHE T'
   p[0] = None
@@ -435,6 +439,14 @@ def p_counter_mire(p):
   'counter : MIRE counter_word'
   p[0] = unimplemented()
 
+def p_get(p):
+  'get : GET'
+  p[0] = unimplemented()
+
+def p_gets(p):
+  'get : GETS'
+  p[0] = unimplemented()
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
@@ -445,6 +457,10 @@ def p_affect_recur(p):
 
 def p_affect_schedule_trigger(p):
   'affect_part : trigger COMMA affect'
+  p[0] = unimplemented()
+
+def p_affect_pt_mod(p):
+  'affect : object get math_exp SLASH math_exp'
   p[0] = unimplemented()
 
 def p_affect_becomes_type(p):
@@ -515,8 +531,12 @@ def p_affect_damage(p):
   'affect_part : object DEALS number DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
-def p_affect_add_mana(p):
-  'affect_part : ADD cost TO YOUR MANA POOL'
+def p_affect_add_mana_self(p):
+  'affect_part : add cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
+
+def p_affect_add_mana_object(p):
+  'affect_part : object add cost TO object MANA POOL'
   p[0] = unimplemented()
 
 def p_affect_discard(p):
@@ -529,6 +549,14 @@ def p_card(p):
 
 def p_cards(p):
   'card : CARDS'
+  p[0] = unimplemented()
+
+def p_add(p):
+  'add : ADD'
+  p[0] = unimplemented()
+
+def p_adds(p):
+  'add : ADDS'
   p[0] = unimplemented()
 
 def p_where(p):
@@ -579,6 +607,10 @@ def p_qualifier_chosen(p):
   'qualifier : OF object CHOICE'
   p[0] = unimplemented()
 
+def p_qualifier_color(p):
+  'qualifier : color'
+  p[0] = unimplemented()
+
 def p_object_conditional(p):
   'object : conditional'
   p[0] = unimplemented()
@@ -591,12 +623,8 @@ def p_object_backreference(p):
   'object : backref'
   p[0] = unimplemented()
 
-def p_object_backreference_possessive(p):
-  'object : backref APOSTROPHE S'
-  p[0] = unimplemented()
-
 def p_object_backreference_controller(p):
-  'object : backref APOSTROPHE S CONTROLLER'
+  'object : backref CONTROLLER'
   p[0] = unimplemented()
 
 def p_object_prequalified_type(p):
@@ -643,6 +671,14 @@ def p_backref_you(p):
   'backref : YOU'
   p[0] = unimplemented()
 
+def p_backref_its(p):
+  'backref : ITS' #english special case of IT APOSTROPHE S
+  p[0] = unimplemented()
+
+def p_backref_possessive(p):
+  'backref : backref APOSTROPHE S'
+  p[0] = unimplemented()
+
 def p_type_choice(p):
   'type : type OR type'
   p[0] = player_choice(p[1], p[3])
@@ -663,6 +699,10 @@ def p_type_creature(p):
   'type : CREATURE'
   p[0] = p[1]
 
+def p_type_creatures(p):
+  'type : CREATURES'
+  p[0] = p[1]
+
 def p_type_players(p):
   'type : PLAYER APOSTROPHE S'
   p[0] = unimplemented()
@@ -681,6 +721,22 @@ def p_type_land(p):
 
 def p_type_swamp(p):
   'type : SWAMP'
+  p[0] = p[1]
+
+def p_type_mountain(p):
+  'type : MOUNTAIN'
+  p[0] = p[1]
+
+def p_type_plains(p):
+  'type : PLAINS'
+  p[0] = p[1]
+
+def p_type_forest(p):
+  'type : FOREST'
+  p[0] = p[1]
+
+def p_type_island(p):
+  'type : ISLAND'
   p[0] = p[1]
 
 def p_a(p):
