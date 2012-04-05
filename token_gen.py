@@ -31,6 +31,8 @@ replacements = {
   re.compile(r"\["): " open_bracket ",
   re.compile(r"\]"): " close_bracket ",
   re.compile(r","): " comma ",
+  re.compile(r"\("): " lparen ",
+  re.compile(r"\)"): " rparen ",
 }
 
 allowed_punctuation = "+/[]-,:"
