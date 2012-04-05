@@ -231,6 +231,10 @@ def p_ability(p):
   'ability : ability_part PERIOD'
   p[0] = unimplemented()
 
+def p_ability_parenthetical(p):
+  'ability : ability_part parenthetical PERIOD'
+  p[0] = unimplemented()
+
 def p_ability_triggered(p):
   'ability_part : trigger COMMA affect'
   p[0] = unimplemented()
@@ -257,6 +261,28 @@ def p_ability_activate_restriction(p):
 
 def p_ability_resolution_restriction(p):
   'ability_part : THIS ABILITY cant CAUSE status TO BE math_exp'
+  p[0] = unimplemented()
+
+def p_paren_word(p):
+  '''paren_word : IN
+                | ADDITION
+                | TO
+                | THE
+                | MANA
+                | LAND
+                | PRODUCES'''
+  p[0] = unimplemented()
+
+def p_parenthisized(p):
+  'parenthisized : paren_word parenthisized'
+  p[0] = unimplemented()
+
+def p_parenthisized_empty(p):
+  'parenthisized :'
+  p[0] = unimplemented()
+
+def p_parenthetical(p):
+  'parenthetical : LPAREN parenthisized RPAREN'
   p[0] = unimplemented()
 
 def p_status_counter_count(p):
