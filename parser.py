@@ -509,6 +509,10 @@ def p_affect_counters(p):
   'affect_part : math_exp counter ON object'
   p[0] = unimplemented()
 
+def p_affect_look(p):
+  'affect_part : LOOK AT object'
+  p[0] = unimplemented()
+
 def p_affect_put_counters(p):
   'affect_part : PUT math_exp counter ON object'
   p[0] = unimplemented()
@@ -661,6 +665,10 @@ def p_object_qualified(p):
   'object : object qualifier'
   p[0] = unimplemented()
 
+def p_object_attribute(p):
+  'object : object attribute'
+  p[0] = unimplemented()
+
 def p_object_target(p):
   'object : TARGET type'
   p[0] = target(p[2])
@@ -671,6 +679,10 @@ def p_object_each(p):
 
 def p_object_self(p):
   'object : TILDE'
+  p[0] = unimplemented()
+
+def p_attribute_hand(p):
+  'attribute : HAND'
   p[0] = unimplemented()
 
 def p_backref_chosen_player(p):
