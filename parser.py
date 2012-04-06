@@ -353,6 +353,11 @@ def p_phase_combat(p):
   'phase : COMBAT'
   p[0] = unimplemented()
 
+def p_phase_upkeep(p):
+  '''phase : UPKEEP
+           | UPKEEPS'''
+  p[0] = unimplemented()
+
 def p_time_sorc_cast(p):
   'time : ANY TIME YOU COULD CAST A SORCERY'
   p[0] = unimplemented()
@@ -377,12 +382,16 @@ def p_trigger_next(p):
   'time : THE NEXT TIME event'
   p[0] = unimplemented()
 
-def p_time_each_upkeep(p):
-  'time : EACH OF object UPKEEPS'
+def p_time_each(p):
+  'time : EACH time'
+  p[0] = unimplemented()
+
+def p_time_each_of(p):
+  'time : EACH OF time'
   p[0] = unimplemented()
 
 def p_time_upkeep(p):
-  'time : object UPKEEP'
+  'time : object phase'
   p[0] = unimplemented()
 
 def p_time_draw(p):
@@ -591,6 +600,10 @@ def p_affect_term(p):
 
 def p_affect_recur(p):
   'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_attacks(p):
+  'affect_part : object ATTACKS time IF ABLE'
   p[0] = unimplemented()
 
 def p_affect_schedule_trigger(p):
