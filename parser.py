@@ -379,9 +379,17 @@ def p_phase_combat(p):
   'phase : COMBAT'
   p[0] = unimplemented()
 
+def p_phase_untap(p):
+  'phase : UNTAP'
+  p[0] = unimplemented()
+
 def p_phase_upkeep(p):
   '''phase : UPKEEP
            | UPKEEPS'''
+  p[0] = unimplemented()
+
+def p_phase_plural(p):
+  'phase : phase STEPS'
   p[0] = unimplemented()
 
 def p_time_sorc_cast(p):
@@ -500,6 +508,10 @@ def p_doesnt(p):
   'doesnt : DOESN APOSTROPHE T'
   p[0] = None
 
+def p_dont(p):
+  'dont : DON APOSTROPHE T'
+  p[0] = None
+
 def p_action_attack(p):
   'action : ATTACKED'
   p[0] = unimplemented()
@@ -518,6 +530,10 @@ def p_conditional_conjunction(p):
 
 def p_contional_or(p):
   'conditional_part : conditional_part OR conditional_part'
+  p[0] = unimplemented()
+
+def p_conditional_power(p):
+  'conditional_part : POWER math_exp'
   p[0] = unimplemented()
 
 def p_conditional_discard(p):
@@ -672,6 +688,9 @@ def p_affect_recur(p):
   'affect : affect affect_part'
   p[0] = unimplemented()
 
+def p_affect_dont_untap(p):
+  'affect_part : object dont UNTAP'
+
 def p_affect_no_hand_size(p):
   'affect_part : object have NO MAXIMUM HAND SIZE'
   p[0] = unimplemented()
@@ -777,11 +796,11 @@ def p_affect_untap(p):
   p[0] = unimplemented()
 
 def p_affect_where(p):
-  'affect_part : affect COMMA WHERE where'
+  'affect_part : affect_part COMMA WHERE where'
   p[0] = unimplemented()
 
 def p_affect_but(p):
-  'affect_part : affect COMMA BUT but'
+  'affect_part : affect_part COMMA BUT but'
   p[0] = unimplemented()
 
 def p_affect_damage(p):
@@ -840,12 +859,20 @@ def p_where(p):
   'where : X IS math_exp'
   p[0] = unimplemented()
 
+def p_math_empty(p):
+  'math_exp :'
+  p[0] = unimplemented()
+
 def p_math_backref(p):
   'math_exp : THAT'
   p[0] = unimplemented()
 
 def p_math_additional(p):
   'math_exp : math_exp ADDITIONAL'
+  p[0] = unimplemented()
+
+def p_math_or_gt(p):
+  'math_exp : math_exp OR GREATER'
   p[0] = unimplemented()
 
 def p_math_gt(p):
@@ -928,8 +955,20 @@ def p_qualifier_replacement(p):
   'qualifier_part : INSTEAD'
   p[0] = unimplemented()
 
+def p_controller(p):
+  'controller : CONTROLLER'
+  pass
+
+def p_controllers(p):
+  'controller : CONTROLLERS APOSTROPHE'
+  pass
+
 def p_object_conditional(p):
   'object : conditional'
+  p[0] = unimplemented()
+
+def p_object_with(p):
+  'object : object WITH conditional'
   p[0] = unimplemented()
 
 def p_object_num(p):
@@ -941,7 +980,7 @@ def p_object_backreference(p):
   p[0] = unimplemented()
 
 def p_object_backreference_controller(p):
-  'object : backref CONTROLLER'
+  'object : backref controller'
   p[0] = unimplemented()
 
 def p_object_prequalified_type(p):
@@ -990,6 +1029,10 @@ def p_backref_type(p):
 
 def p_backref_gendered_player(p):
   'backref : HIS OR HER'
+  p[0] = unimplemented()
+
+def p_backref_their(p):
+  'backref : THEIR'
   p[0] = unimplemented()
 
 def p_backref_it(p):
@@ -1062,7 +1105,7 @@ def p_type_creature(p):
 
 def p_type_creatures(p):
   'type : CREATURES'
-  p[0] = p[1]
+  p[0] = 'CREATURE'
 
 def p_type_golem(p):
   'type : GOLEM'
@@ -1283,7 +1326,10 @@ if __name__ == '__main__':
     for card_text, in _conn.fetchall():
       try:
         parse(name, card_text)
-        print ".",
+        if DEBUG:
+          print name
+        else:
+          print ".",
       except Exception, e:
         print ""
         print name
