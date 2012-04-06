@@ -345,6 +345,10 @@ def p_event_unblocked(p):
   'event : object WOULD DEAL damage_type TO object'
   p[0] = unimplemented()
 
+def p_time_sorc_cast(p):
+  'time : ANY TIME YOU COULD CAST A SORCERY'
+  p[0] = unimplemented()
+
 def p_time_ephemeral(p):
   'time : UNTIL time'
   p[0] = unimplemented()
@@ -461,6 +465,10 @@ def p_conditional(p):
   'conditional : object conditional_part'
   p[0] = unimplemented()
 
+def p_conditional_conjunction(p):
+  'conditional_part : conditional_part AND conditional_part'
+  p[0] = unimplemented()
+
 def p_conditional_cyclopean(p):
   'conditional_part : THAT math_exp counter WAS PUT ONTO WITH object'
   p[0] = unimplemented()
@@ -497,6 +505,14 @@ def p_conditional_has_counter(p):
   'conditional_part : HAS A counter ON IT'
   p[0] = unimplemented()
 
+def p_conditional_never_flipped(p):
+  'conditional_part : HAS NOT BEEN TURNED FACE UP'
+  p[0] = unimplemented()
+
+def p_conditional_illusory_unflip(p):
+  'conditional_part : WOULD ASSIGN OR DEAL DAMAGE COMMA BE DEALT DAMAGE COMMA OR BECOME TAPPED'
+  p[0] = unimplemented()
+
 def p_conditional_chaos_orb(p):
   'conditional_part : TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
   p[0] = unimplemented()
@@ -513,8 +529,12 @@ def p_counter_word_plural(p):
   'counter_word : COUNTERS'
   p[0] = None
 
+def p_pt(p):
+  'pt : math_exp SLASH math_exp'
+  p[0] = unimplemented()
+
 def p_counter_pt_mod(p):
-  'counter : math_exp SLASH math_exp counter_word'
+  'counter : pt counter_word'
   p[0] = unimplemented()
 
 def p_counter_mire(p):
@@ -569,12 +589,24 @@ def p_affect_tap(p):
   'affect_part : TAP object'
   p[0] = unimplemented()
 
+def p_affect_cast_illusory_mask(p):
+  'affect_part : CAST object FACE DOWN AS A pt CREATURE SPELL WITHOUT PAYING ITS MANA COST'
+  p[0] = unimplemented()
+
+def p_affect_unflip_illusory_mask_creature(p):
+  'affect_part : INSTEAD IT APOSTROPHE S TURNED FACE UP AND ASSIGNS OR DEALS DAMAGE COMMA IS DEALT DAMAGE COMMA OR BECOMES TAPPED'
+  p[0] = unimplemented()
+
 def p_affect_time_restriction(p):
   'affect_part : FOR AS LONG AS conditional'
   p[0] = unimplemented()
 
 def p_affect_resolve_cost(p):
-  'affect_part : object MAY PAY cost'
+  'affect_part : PAY cost'
+  p[0] = unimplemented()
+
+def p_affect_resolve_optional_affect(p):
+  'affect_part : object MAY affect_part'
   p[0] = unimplemented()
 
 def p_affect_conditional(p):
@@ -669,10 +701,6 @@ def p_where(p):
   'where : WHERE X IS math_exp'
   p[0] = unimplemented()
 
-def p_math_an(p):
-  'math_exp : AN'
-  p[0] = unimplemented()
-
 def p_math_additional(p):
   'math_exp : math_exp ADDITIONAL'
   p[0] = unimplemented()
@@ -709,20 +737,44 @@ def p_count_cards_hand(p):
   'count : CARDS IN object HAND'
   p[0] = unimplemented()
 
+def p_qualifier_top(p):
+  'qualifier : qualifier_part'
+  p[0] = unimplemented()
+
+def p_qualifier_recur(p):
+  'qualifier : qualifier qualifier_part'
+  p[0] = unimplemented()
+
 def p_qualifier_chaos_orb(p):
-  'qualifier : IT TOUCHES'
+  'qualifier_part : IT TOUCHES'
   p[0] = unimplemented()
 
 def p_qualifier_unblocked(p):
-  'qualifier : AN UNBLOCKED'
+  'qualifier_part : math_exp UNBLOCKED'
   p[0] = unimplemented()
 
 def p_qualifier_chosen(p):
-  'qualifier : OF object CHOICE'
+  'qualifier_part : OF object CHOICE'
   p[0] = unimplemented()
 
 def p_qualifier_color(p):
-  'qualifier : color'
+  'qualifier_part : color'
+  p[0] = unimplemented()
+
+def p_qualifier_card(p):
+  'qualifier_part : CARD'
+  p[0] = unimplemented()
+
+def p_qualifier_held(p):
+  'qualifier_part : IN object HAND'
+  p[0] = unimplemented()
+
+def p_qualifier_illusory_mask_creature(p):
+  'qualifier_part : WHOSE MANA COST COULD BE PAID BY SOME AMOUNT OF COMMA OR ALL OF COMMA THE MANA YOU SPENT ON math_exp'
+  p[0] = unimplemented()
+
+def p_qualifier_illusory_mask_creature_resolved(p):
+  'qualifier_part : THAT SPELL BECOMES AS IT RESOLVES'
   p[0] = unimplemented()
 
 def p_object_conditional(p):
@@ -771,6 +823,10 @@ def p_attribute_hand(p):
 
 def p_backref_chosen_player(p):
   'backref : THE CHOSEN type'
+  p[0] = unimplemented()
+
+def p_backref_by_type(p):
+  'backref : THE type'
   p[0] = unimplemented()
 
 def p_backref_type(p):
@@ -829,6 +885,10 @@ def p_type_permanent(p):
   'type : PERMANENTS'
   p[0] = p[1]
 
+def p_type_card(p):
+  'type : card'
+  p[0] = p[1]
+
 def p_type_artifact(p):
   'type : ARTIFACT'
   p[0] = unimplemented()
@@ -839,6 +899,10 @@ def p_type_creature(p):
 
 def p_type_creatures(p):
   'type : CREATURES'
+  p[0] = p[1]
+
+def p_type_spell(p):
+  'type : SPELL'
   p[0] = p[1]
 
 def p_type_players(p):
