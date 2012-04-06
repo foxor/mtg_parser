@@ -373,6 +373,10 @@ def p_time_upkeep(p):
   'time : object UPKEEP'
   p[0] = unimplemented()
 
+def p_time_draw(p):
+  'time : object DRAW STEP'
+  p[0] = unimplemented()
+
 def p_time_beginning_start(p):
   'time : AT THE BEGINNING OF time'
   p[0] = unimplemented()
@@ -469,9 +473,9 @@ def p_conditional_time(p):
   'conditional_part : ATTACKED OR BLOCKED THIS COMBAT'
   p[0] = unimplemented()
 
-#def p_conditional_time(p):
-#  'conditional_part : conditional_part time'
-#  p[0] = unimplemented()
+def p_conditional_untapped(p):
+  'conditional_part : IS UNTAPPED'
+  p[0] = unimplemented()
 
 def p_contional_or(p):
   'conditional_part : conditional_part OR conditional_part'
@@ -525,6 +529,10 @@ def p_gets(p):
   'get : GETS'
   p[0] = unimplemented()
 
+def p_draw_present(p):
+  'draw : DRAWS'
+  p[0] = unimplemented()
+
 def p_keyword_banding(p):
   'keyword : BANDING'
   p[0] = unimplemented()
@@ -542,7 +550,7 @@ def p_affect_schedule_trigger(p):
   p[0] = unimplemented()
 
 def p_affect_pt_mod(p):
-  'affect : object get math_exp SLASH math_exp'
+  'affect_part : object get math_exp SLASH math_exp'
   p[0] = unimplemented()
 
 def p_affect_becomes_type(p):
@@ -551,6 +559,10 @@ def p_affect_becomes_type(p):
 
 def p_affect_gains_keyword(p):
   'affect_part : object GAINS keyword'
+  p[0] = unimplemented()
+
+def p_affect_object_draw(p):
+  'affect_part : object draw math_exp card'
   p[0] = unimplemented()
 
 def p_affect_time_restriction(p):
@@ -651,6 +663,14 @@ def p_adds(p):
 
 def p_where(p):
   'where : WHERE X IS math_exp'
+  p[0] = unimplemented()
+
+def p_math_an(p):
+  'math_exp : AN'
+  p[0] = unimplemented()
+
+def p_math_additional(p):
+  'math_exp : math_exp ADDITIONAL'
   p[0] = unimplemented()
 
 def p_math_gt(p):
