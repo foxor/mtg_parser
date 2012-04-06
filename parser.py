@@ -565,6 +565,10 @@ def p_affect_object_draw(p):
   'affect_part : object draw math_exp card'
   p[0] = unimplemented()
 
+def p_affect_tap(p):
+  'affect_part : TAP object'
+  p[0] = unimplemented()
+
 def p_affect_time_restriction(p):
   'affect_part : FOR AS LONG AS conditional'
   p[0] = unimplemented()
@@ -750,11 +754,11 @@ def p_object_attribute(p):
   p[0] = unimplemented()
 
 def p_object_target(p):
-  'object : TARGET type'
+  'object : TARGET type_list'
   p[0] = target(p[2])
 
 def p_object_each(p):
-  'object : EACH type'
+  'object : EACH type_list'
   p[0] = unimplemented()
 
 def p_object_self(p):
@@ -797,6 +801,18 @@ def p_backref_possessive(p):
   'backref : backref APOSTROPHE S'
   p[0] = unimplemented()
 
+def p_type_list_term(p):
+  'type_list : type'
+  p[0] = p[1]
+
+def p_type_list_recur(p):
+  'type_list : type_list COMMA type'
+  p[0] = unimplemented()
+
+def p_type_list_or(p):
+  'type_list : type_list COMMA OR type'
+  p[0] = unimplemented()
+
 def p_type_choice(p):
   'type : type OR type'
   p[0] = player_choice(p[1], p[3])
@@ -812,6 +828,10 @@ def p_type_permanent(p):
 def p_type_permanent(p):
   'type : PERMANENTS'
   p[0] = p[1]
+
+def p_type_artifact(p):
+  'type : ARTIFACT'
+  p[0] = unimplemented()
 
 def p_type_creature(p):
   'type : CREATURE'
