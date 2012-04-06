@@ -634,12 +634,20 @@ def p_being_verb_becomes(p):
   'being_verb : BECOMES'
   pass
 
+def p_have(p):
+  'have : HAVE'
+  pass
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
 
 def p_affect_recur(p):
   'affect : affect affect_part'
+  p[0] = unimplemented()
+
+def p_affect_no_hand_size(p):
+  'affect_part : object have NO MAXIMUM HAND SIZE'
   p[0] = unimplemented()
 
 def p_affect_attacks(p):
