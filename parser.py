@@ -263,6 +263,10 @@ def p_ability_activate_restriction(p):
   'ability_part : ACTIVATE THIS ABILITY ONLY time'
   p[0] = unimplemented()
 
+def p_ability_event_impossible(p):
+  'ability_part : object cant event'
+  p[0] = unimplemented()
+
 def p_ability_resolution_restriction(p):
   'ability_part : THIS ABILITY cant CAUSE status TO BE math_exp'
   p[0] = unimplemented()
@@ -341,8 +345,20 @@ def p_damage_type_combat(p):
   'damage_type : COMBAT DAMAGE'
   p[0] = unimplemented()
 
+def p_event_hypothetical(p):
+  'event : object WOULD event'
+  p[0] = unimplemented()
+
 def p_event_unblocked(p):
-  'event : object WOULD DEAL damage_type TO object'
+  'event : DEAL damage_type TO object'
+  p[0] = unimplemented()
+
+def p_event_blocked(p):
+  'event : BE BLOCKED'
+  p[0] = unimplemented()
+
+def p_event_conditional(p):
+  'event : event conditional'
   p[0] = unimplemented()
 
 def p_phase_turn(p):
@@ -500,6 +516,10 @@ def p_conditional_cyclopean_2(p):
 
 def p_conditional_time(p):
   'conditional_part : ATTACKED OR BLOCKED THIS COMBAT'
+  p[0] = unimplemented()
+
+def p_conditional_by_type(p):
+  'conditional_part : BY type'
   p[0] = unimplemented()
 
 def p_conditional_untapped(p):
@@ -965,6 +985,10 @@ def p_type_creatures(p):
 def p_type_golem(p):
   'type : GOLEM'
   p[0] = p[1]
+
+def p_type_walls(p):
+  'type : WALLS'
+  p[0] = 'WALL'
 
 def p_type_spell(p):
   'type : SPELL'
