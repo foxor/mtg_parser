@@ -561,6 +561,10 @@ def p_gets(p):
   'get : GETS'
   p[0] = unimplemented()
 
+def p_draw_instruction(p):
+  'draw : DRAW'
+  p[0] = unimplemented()
+
 def p_draw_present(p):
   'draw : DRAWS'
   p[0] = unimplemented()
@@ -855,6 +859,10 @@ def p_object_self(p):
 
 def p_attribute_hand(p):
   'attribute : HAND'
+  p[0] = unimplemented()
+
+def p_backref_self(p):
+  'backref : '
   p[0] = unimplemented()
 
 def p_backref_chosen_player(p):
