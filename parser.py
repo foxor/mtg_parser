@@ -506,6 +506,14 @@ def p_conditional_conjunction(p):
   'conditional_part : conditional_part AND conditional_part'
   p[0] = unimplemented()
 
+def p_contional_or(p):
+  'conditional_part : conditional_part OR conditional_part'
+  p[0] = unimplemented()
+
+def p_conditional_discard(p):
+  'conditional_part : object CAUSES object TO discard object'
+  p[0] = unimplemented()
+
 def p_conditional_cyclopean(p):
   'conditional_part : THAT math_exp counter WAS PUT ONTO WITH object'
   p[0] = unimplemented()
@@ -524,10 +532,6 @@ def p_conditional_by_type(p):
 
 def p_conditional_untapped(p):
   'conditional_part : IS UNTAPPED'
-  p[0] = unimplemented()
-
-def p_contional_or(p):
-  'conditional_part : conditional_part OR conditional_part'
   p[0] = unimplemented()
 
 def p_conditional_action(p):
@@ -751,7 +755,11 @@ def p_affect_untap(p):
   p[0] = unimplemented()
 
 def p_affect_where(p):
-  'affect_part : affect COMMA where'
+  'affect_part : affect COMMA WHERE where'
+  p[0] = unimplemented()
+
+def p_affect_but(p):
+  'affect_part : affect COMMA BUT but'
   p[0] = unimplemented()
 
 def p_affect_damage(p):
@@ -767,8 +775,16 @@ def p_affect_add_mana_object(p):
   p[0] = unimplemented()
 
 def p_affect_discard(p):
-  'affect_part : object DISCARDS math_exp card'
+  'affect_part : object discard object'
   p[0] = unimplemented()
+
+def p_discard(p):
+  'discard : DISCARD'
+  pass
+
+def p_discards(p):
+  'discard : DISCARDS'
+  pass
 
 def p_card(p):
   'card : CARD'
@@ -786,8 +802,20 @@ def p_adds(p):
   'add : ADDS'
   p[0] = unimplemented()
 
+def p_zone_top_library(p):
+  'zone : ON TOP OF object LIBRARY'
+  p[0] = unimplemented()
+
+def p_zone_graveyard(p):
+  'zone : INTO YOUR GRAVEYARD'
+  p[0] = unimplemented()
+
+def p_but_zone_replacement(p):
+  'but : object MAY PUT object zone INSTEAD OF zone'
+  p[0] = unimplemented()
+
 def p_where(p):
-  'where : WHERE X IS math_exp'
+  'where : X IS math_exp'
   p[0] = unimplemented()
 
 def p_math_backref(p):
@@ -981,6 +1009,10 @@ def p_type_choice(p):
 def p_type_exclude(p):
   'type : NON MINUS type type'
   p[0] = unimplemented()
+
+def p_type_effect(p):
+  'type : EFFECT'
+  p[0] = p[1]
 
 def p_type_permanent(p):
   'type : PERMANENT'
