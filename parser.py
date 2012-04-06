@@ -544,6 +544,10 @@ def p_conditional_untapped(p):
   'conditional_part : IS UNTAPPED'
   p[0] = unimplemented()
 
+def p_conditional_tapped(p):
+  'conditional_part : IS TAPPED'
+  p[0] = unimplemented()
+
 def p_conditional_action(p):
   'conditional_part : action'
   p[0] = unimplemented()
