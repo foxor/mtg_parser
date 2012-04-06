@@ -239,6 +239,14 @@ def p_ability_parenthetical(p):
   'ability : ability_part parenthetical PERIOD'
   p[0] = unimplemented()
 
+def p_ability_parenthetical_includes_period(p):
+  'ability : ability_part parenthetical'
+  p[0] = unimplemented()
+
+def p_ability_keyword(p):
+  'ability_part : keyword'
+  p[0] = unimplemented()
+
 def p_ability_triggered(p):
   'ability_part : trigger COMMA affect'
   p[0] = unimplemented()
@@ -318,6 +326,8 @@ def p_paren_word(p):
                 | BY
                 | ITS
                 | IS
+                | THIS
+                | T
                 | PRODUCES'''
   p[0] = unimplemented()
 
@@ -604,6 +614,14 @@ def p_draw_present(p):
 
 def p_keyword_banding(p):
   'keyword : BANDING'
+  p[0] = unimplemented()
+
+def p_keyword_defender(p):
+  'keyword : DEFENDER'
+  p[0] = unimplemented()
+
+def p_keyword_regenerate(p):
+  'keyword : REGENERATE object'
   p[0] = unimplemented()
 
 def p_change_desc_single(p):
