@@ -602,17 +602,37 @@ def p_keyword_banding(p):
   'keyword : BANDING'
   p[0] = unimplemented()
 
+def p_change_desc_single(p):
+  'change_desc : a change_desc'
+  p[0] = unimplemented()
+
 def p_change_type(p):
-  'change_desc : a type'
+  'change_desc : type'
   p[0] = unimplemented()
 
 def p_change_pt(p):
-  'change_desc : a pt'
+  'change_desc : pt'
   p[0] = unimplemented()
 
 def p_change_type_chain(p):
   'change_desc : change_desc type'
   p[0] = unimplemented()
+
+def p_change_qualified(p):
+  'change_desc : change_desc qualifier'
+  p[0] = unimplemented()
+
+def p_being_verb_are(p):
+  'being_verb : ARE'
+  pass
+
+def p_being_verb_is(p):
+  'being_verb : IS'
+  pass
+
+def p_being_verb_becomes(p):
+  'being_verb : BECOMES'
+  pass
 
 def p_affect_term(p):
   'affect : affect_part'
@@ -635,11 +655,7 @@ def p_affect_pt_mod(p):
   p[0] = unimplemented()
 
 def p_affect_becomes_type(p):
-  'affect_part : object IS change_desc'
-  p[0] = unimplemented()
-
-def p_affect_self_becomes(p):
-  'affect_part : object BECOMES change_desc'
+  'affect_part : object being_verb change_desc'
   p[0] = unimplemented()
 
 def p_affect_gains_keyword(p):
@@ -812,6 +828,10 @@ def p_qualifier_top(p):
 
 def p_qualifier_recur(p):
   'qualifier : qualifier qualifier_part'
+  p[0] = unimplemented()
+
+def p_qualifier_retain_property(p):
+  'qualifier_part : THAT being_verb STILL object'
   p[0] = unimplemented()
 
 def p_qualifier_chaos_orb(p):
@@ -1010,9 +1030,17 @@ def p_type_land(p):
   'type : LAND'
   p[0] = p[1]
 
+def p_type_lands(p):
+  'type : LANDS'
+  p[0] = 'LAND'
+
 def p_type_swamp(p):
   'type : SWAMP'
   p[0] = p[1]
+
+def p_type_swamps(p):
+  'type : SWAMPS'
+  p[0] = 'SWAMP'
 
 def p_type_mountain(p):
   'type : MOUNTAIN'
