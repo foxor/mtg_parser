@@ -666,7 +666,7 @@ def p_affect_where(p):
   p[0] = unimplemented()
 
 def p_affect_damage(p):
-  'affect_part : object DEALS number DAMAGE TO object'
+  'affect_part : object DEALS math_exp DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
 def p_affect_add_mana_self(p):
@@ -699,6 +699,10 @@ def p_adds(p):
 
 def p_where(p):
   'where : WHERE X IS math_exp'
+  p[0] = unimplemented()
+
+def p_math_backref(p):
+  'math_exp : THAT'
   p[0] = unimplemented()
 
 def p_math_additional(p):
@@ -775,6 +779,10 @@ def p_qualifier_illusory_mask_creature(p):
 
 def p_qualifier_illusory_mask_creature_resolved(p):
   'qualifier_part : THAT SPELL BECOMES AS IT RESOLVES'
+  p[0] = unimplemented()
+
+def p_qualifier_replacement(p):
+  'qualifier_part : INSTEAD'
   p[0] = unimplemented()
 
 def p_object_conditional(p):
@@ -888,6 +896,10 @@ def p_type_permanent(p):
 def p_type_card(p):
   'type : card'
   p[0] = p[1]
+
+def p_type_damage_source(p):
+  'type : SOURCE'
+  p[0] = unimplemented()
 
 def p_type_artifact(p):
   'type : ARTIFACT'
@@ -1098,7 +1110,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 20")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 40")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
