@@ -227,6 +227,10 @@ def p_conjoined_ability(p):
   'ability : ability THEN ability'
   p[0] = unimplemented()
 
+def p_ability_post_parenthetical(p):
+  'ability : ability parenthetical'
+  p[0] = unimplemented()
+
 def p_ability(p):
   'ability : ability_part PERIOD'
   p[0] = unimplemented()
@@ -270,6 +274,46 @@ def p_paren_word(p):
                 | THE
                 | MANA
                 | LAND
+                | ANY
+                | CREATURES
+                | WITH
+                | BANDING
+                | AND
+                | UP
+                | ONE
+                | WITHOUT
+                | COMMA
+                | CAN
+                | ATTACK
+                | A
+                | BAND
+                | BANDS
+                | ARE
+                | BLOCKED
+                | AS
+                | GROUP
+                | PERIOD
+                | IF
+                | PLAYER
+                | CONTROLS
+                | BLOCKING
+                | BEING
+                | CREATURE
+                | THAT
+                | DIVIDES
+                | APOSTROPHE
+                | S
+                | COMBAT
+                | OR
+                | DAMAGE
+                | NOT
+                | IT
+                | CONTROLLER
+                | AMONG
+                | OF
+                | BY
+                | ITS
+                | IS
                 | PRODUCES'''
   p[0] = unimplemented()
 
@@ -299,6 +343,14 @@ def p_damage_type_combat(p):
 
 def p_event_unblocked(p):
   'event : object WOULD DEAL damage_type TO object'
+  p[0] = unimplemented()
+
+def p_time_ephemeral(p):
+  'time : UNTIL time'
+  p[0] = unimplemented()
+
+def p_time_eot(p):
+  'time : END OF TURN'
   p[0] = unimplemented()
 
 def p_time_persistant(p):
@@ -473,6 +525,10 @@ def p_gets(p):
   'get : GETS'
   p[0] = unimplemented()
 
+def p_keyword_banding(p):
+  'keyword : BANDING'
+  p[0] = unimplemented()
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
@@ -491,6 +547,10 @@ def p_affect_pt_mod(p):
 
 def p_affect_becomes_type(p):
   'affect_part : object IS a type'
+  p[0] = unimplemented()
+
+def p_affect_gains_keyword(p):
+  'affect_part : object GAINS keyword'
   p[0] = unimplemented()
 
 def p_affect_time_restriction(p):
