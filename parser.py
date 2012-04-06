@@ -345,6 +345,14 @@ def p_event_unblocked(p):
   'event : object WOULD DEAL damage_type TO object'
   p[0] = unimplemented()
 
+def p_phase_turn(p):
+  'phase : TURN'
+  p[0] = unimplemented()
+
+def p_phase_combat(p):
+  'phase : COMBAT'
+  p[0] = unimplemented()
+
 def p_time_sorc_cast(p):
   'time : ANY TIME YOU COULD CAST A SORCERY'
   p[0] = unimplemented()
@@ -353,8 +361,8 @@ def p_time_ephemeral(p):
   'time : UNTIL time'
   p[0] = unimplemented()
 
-def p_time_eot(p):
-  'time : END OF TURN'
+def p_time_eo(p):
+  'time : END OF phase'
   p[0] = unimplemented()
 
 def p_time_persistant(p):
@@ -387,6 +395,10 @@ def p_time_beginning_start(p):
 
 def p_time_during(p):
   'time : DURING time'
+  p[0] = unimplemented()
+
+def p_time_phase(p):
+  'time : phase'
   p[0] = unimplemented()
 
 def p_time_untap(p):
@@ -557,6 +569,18 @@ def p_keyword_banding(p):
   'keyword : BANDING'
   p[0] = unimplemented()
 
+def p_change_type(p):
+  'change_desc : a type'
+  p[0] = unimplemented()
+
+def p_change_pt(p):
+  'change_desc : a pt'
+  p[0] = unimplemented()
+
+def p_change_type_chain(p):
+  'change_desc : change_desc type'
+  p[0] = unimplemented()
+
 def p_affect_term(p):
   'affect : affect_part'
   p[0] = unimplemented()
@@ -574,7 +598,11 @@ def p_affect_pt_mod(p):
   p[0] = unimplemented()
 
 def p_affect_becomes_type(p):
-  'affect_part : object IS a type'
+  'affect_part : object IS change_desc'
+  p[0] = unimplemented()
+
+def p_affect_self_becomes(p):
+  'affect_part : object BECOMES change_desc'
   p[0] = unimplemented()
 
 def p_affect_gains_keyword(p):
@@ -911,6 +939,10 @@ def p_type_creature(p):
 
 def p_type_creatures(p):
   'type : CREATURES'
+  p[0] = p[1]
+
+def p_type_golem(p):
+  'type : GOLEM'
   p[0] = p[1]
 
 def p_type_spell(p):
