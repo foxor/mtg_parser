@@ -1059,12 +1059,8 @@ def p_type_list_term(p):
   'type_list : type'
   p[0] = p[1]
 
-def p_type_list_recur(p):
-  'type_list : type_list COMMA type'
-  p[0] = unimplemented()
-
-def p_type_list_or(p):
-  'type_list : type_list COMMA OR type'
+def p_type_list_3(p):
+  'type_list : card_type COMMA card_type COMMA OR card_type'
   p[0] = unimplemented()
 
 def p_type_choice(p):
@@ -1095,16 +1091,20 @@ def p_type_damage_source(p):
   'type : SOURCE'
   p[0] = unimplemented()
 
+def p_type_card_type(p):
+  'type : card_type'
+  p[0] = unimplemented()
+
 def p_type_artifact(p):
-  'type : ARTIFACT'
+  'card_type : ARTIFACT'
   p[0] = unimplemented()
 
 def p_type_creature(p):
-  'type : CREATURE'
+  'card_type : CREATURE'
   p[0] = p[1]
 
 def p_type_creatures(p):
-  'type : CREATURES'
+  'card_type : CREATURES'
   p[0] = 'CREATURE'
 
 def p_type_golem(p):
@@ -1132,11 +1132,11 @@ def p_type_opponent(p):
   p[0] = p[1]
 
 def p_type_land(p):
-  'type : LAND'
+  'card_type : LAND'
   p[0] = p[1]
 
 def p_type_lands(p):
-  'type : LANDS'
+  'card_type : LANDS'
   p[0] = 'LAND'
 
 def p_type_swamp(p):
