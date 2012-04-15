@@ -980,7 +980,7 @@ def p_object_with(p):
   p[0] = unimplemented()
 
 def p_object_num(p):
-  'object : math_exp type'
+  'object : math_exp type_list'
   p[0] = unimplemented()
 
 def p_object_backreference(p):
@@ -1067,8 +1067,17 @@ def p_type_list_term(p):
   'type_list : type'
   p[0] = p[1]
 
+#these help keep commas in line
 def p_type_list_3(p):
-  'type_list : card_type COMMA card_type COMMA OR card_type'
+  'type_list : card_type COMMA card_type COMMA'
+  p[0] = unimplemented()
+
+def p_type_list_disjunction(p):
+  'type_list : type_list OR card_type'
+  p[0] = unimplemented()
+
+def p_type_list_conjunction(p):
+  'type_list : type_list AND card_type'
   p[0] = unimplemented()
 
 def p_type_choice(p):
@@ -1107,6 +1116,10 @@ def p_type_artifact(p):
   'card_type : ARTIFACT'
   p[0] = unimplemented()
 
+def p_type_artifacts(p):
+  'card_type : ARTIFACTS'
+  p[0] = unimplemented()
+
 def p_type_creature(p):
   'card_type : CREATURE'
   p[0] = p[1]
@@ -1114,6 +1127,22 @@ def p_type_creature(p):
 def p_type_creatures(p):
   'card_type : CREATURES'
   p[0] = 'CREATURE'
+
+def p_type_land(p):
+  'card_type : LAND'
+  p[0] = p[1]
+
+def p_type_lands(p):
+  'card_type : LANDS'
+  p[0] = 'LAND'
+
+def p_type_enchantment(p):
+  'card_type : ENCHANTMENT'
+  p[0] = p[1]
+
+def p_type_enchantment(p):
+  'card_type : ENCHANTMENTS'
+  p[0] = 'ENCHANTMENT'
 
 def p_type_golem(p):
   'type : GOLEM'
@@ -1138,14 +1167,6 @@ def p_type_player(p):
 def p_type_opponent(p):
   'type : OPPONENT'
   p[0] = p[1]
-
-def p_type_land(p):
-  'card_type : LAND'
-  p[0] = p[1]
-
-def p_type_lands(p):
-  'card_type : LANDS'
-  p[0] = 'LAND'
 
 def p_type_swamp(p):
   'type : SWAMP'
