@@ -1349,7 +1349,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 40")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 80")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
