@@ -255,6 +255,10 @@ def p_ability_triggered_nonstack(p):
   'ability_part : trigger WITH affect'
   p[0] = unimplemented()
 
+def p_ability_triggered_initial_status(p):
+  'ability_part : trigger affect'
+  p[0] = unimplemented()
+
 def p_ability_activated(p):
   'ability_part : cost COLON ability_part'
   p[0] = unimplemented()
@@ -717,6 +721,10 @@ def p_affect_gains_keyword(p):
 
 def p_affect_object_draw(p):
   'affect_part : object draw math_exp card'
+  p[0] = unimplemented()
+
+def p_affect_tapped(p):
+  'affect_part : TAPPED'
   p[0] = unimplemented()
 
 def p_affect_tap(p):
