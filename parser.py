@@ -332,6 +332,10 @@ def p_paren_word(p):
                 | IS
                 | THIS
                 | T
+                | BE
+                | EXCEPT
+                | FLYING
+                | REACH
                 | PRODUCES'''
   p[0] = unimplemented()
 
@@ -620,6 +624,42 @@ def p_counter_mire(p):
   'counter : MIRE counter_word'
   p[0] = unimplemented()
 
+def p_token(p):
+  'token_part : pt token_desc CREATURE TOKEN'
+  p[0] = unimplemented()
+
+def p_token_with_keyword(p):
+  'token : token_part WITH keyword'
+  p[0] = unimplemented()
+
+def p_token_no_affect(p):
+  'token : token_part'
+  p[0] = unimplemented()
+
+def p_token_named(p):
+  'token : token NAMED token_name'
+  p[0] = unimplemented()
+
+def p_token_named_wasp(p):
+  'token_name : WASP'
+  p[0] = unimplemented()
+
+def p_token_desc(p):
+  'token_desc : token_desc_part'
+  p[0] = unimplemented()
+
+def p_token_desc_recur(p):
+  'token_desc : token_desc token_desc_part'
+  p[0] = unimplemented()
+
+def p_token_color(p):
+  'token_desc_part : color'
+  p[0] = unimplemented()
+
+def p_token_type(p):
+  'token_desc_part : type'
+  p[0] = unimplemented()
+
 def p_get(p):
   'get : GET'
   p[0] = unimplemented()
@@ -646,6 +686,10 @@ def p_keyword_defender(p):
 
 def p_keyword_regenerate(p):
   'keyword : REGENERATE object'
+  p[0] = unimplemented()
+
+def p_keyword_flying(p):
+  'keyword : FLYING'
   p[0] = unimplemented()
 
 def p_change_desc_single(p):
@@ -765,6 +809,10 @@ def p_affect_look(p):
 
 def p_affect_put_counters(p):
   'affect_part : PUT math_exp counter ON object'
+  p[0] = unimplemented()
+
+def p_affect_put_tokens(p):
+  'affect_part : PUT math_exp token ONTO THE BATTLEFIELD'
   p[0] = unimplemented()
 
 def p_affect_remove_counters(p):
@@ -1156,6 +1204,10 @@ def p_type_golem(p):
   'type : GOLEM'
   p[0] = p[1]
 
+def p_type_insect(p):
+  'type : INSECT'
+  p[0] = p[1]
+
 def p_type_walls(p):
   'type : WALLS'
   p[0] = 'WALL'
@@ -1347,6 +1399,10 @@ def p_color_blue(p):
 def p_color_black(p):
   'color : BLACK'
   p[0] = black
+
+def p_color_less(p):
+  'color : COLORLESS'
+  p[0] = unimplemented()
 
 parser = yacc.yacc(debug=True)
 
