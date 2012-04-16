@@ -243,6 +243,10 @@ def p_ability_parenthetical_includes_period(p):
   'ability : ability_part parenthetical'
   p[0] = unimplemented()
 
+def p_ability_keyword_noperiod(p):
+  'ability : keyword'
+  p[0] = unimplemented()
+
 def p_ability_keyword(p):
   'ability_part : keyword'
   p[0] = unimplemented()
@@ -712,6 +716,10 @@ def p_keyword_flying(p):
   'keyword : FLYING'
   p[0] = unimplemented()
 
+def p_keyword_enchant(p):
+  'keyword : ENCHANT object'
+  p[0] = unimplemented()
+
 def p_change_desc_single(p):
   'change_desc : a change_desc'
   p[0] = unimplemented()
@@ -947,6 +955,10 @@ def p_zone_graveyard(p):
   'zone : INTO YOUR GRAVEYARD'
   p[0] = unimplemented()
 
+def p_zone_any_graveyard(p):
+  'zone : IN A GRAVEYARD'
+  p[0] = unimplemented()
+
 def p_but_zone_replacement(p):
   'but : object MAY PUT object zone INSTEAD OF zone'
   p[0] = unimplemented()
@@ -1037,6 +1049,10 @@ def p_qualifier_color(p):
 
 def p_qualifier_card(p):
   'qualifier_part : CARD'
+  p[0] = unimplemented()
+
+def p_qualifier_zone(p):
+  'qualifier_part : zone'
   p[0] = unimplemented()
 
 def p_qualifier_held(p):
