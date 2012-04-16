@@ -903,6 +903,10 @@ def p_affect_replacement(p):
   'affect_part : affect_part INSTEAD'
   p[0] = unimplemented()
 
+def p_affect_add_turn(p):
+  'affect_part : TAKE math_exp EXTRA TURN AFTER THIS ONE'
+  p[0] = unimplemented()
+
 def p_mana_colored(p):
   'mana : color MANA'
   p[0] = unimplemented()
