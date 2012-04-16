@@ -823,8 +823,16 @@ def p_affect_add_mana_object(p):
   'affect_part : object add cost TO object MANA POOL'
   p[0] = unimplemented()
 
+def p_affect_mana_release(p):
+  'affect_part : SPEND mana AS THOUGH IT WERE mana'
+  p[0] = unimplemented()
+
 def p_affect_discard(p):
   'affect_part : object discard object'
+  p[0] = unimplemented()
+
+def p_mana_colored(p):
+  'mana : color MANA'
   p[0] = unimplemented()
 
 def p_discard(p):
