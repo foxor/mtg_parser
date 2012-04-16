@@ -20,6 +20,11 @@ re_sep = re.compile(word_seperator)
 number = r"^(\d*)$"
 re_number = re.compile(number)
 
+prereplacements = {
+  re.compile(r'\."'): '".',
+  re.compile(r"\.\)"): ').',
+}
+
 replacements = {
   re.compile(r"Variable Colorless"): "x",
   re.compile(r"'"): " apostrophe ",
@@ -33,6 +38,7 @@ replacements = {
   re.compile(r","): " comma ",
   re.compile(r"\("): " lparen ",
   re.compile(r"\)"): " rparen ",
+  re.compile(r'"'): " quote ",
 }
 
 allowed_punctuation = "+/[]-,:"
@@ -50,8 +56,9 @@ def sanitize(card_name, card_text):
     card_text = re.sub(card_name.split(',')[0], " tilde ", card_text)
 
   # Pull semantically significant punctuation into words that can be lexed by the same process as the rest of the card
-  for regex, sub in replacements.iteritems():
-    card_text = re.sub(regex, sub, card_text)
+  for replacement_dict in [prereplacements, replacements]:
+    for regex, sub in replacement_dict.iteritems():
+      card_text = re.sub(regex, sub, card_text)
   card_text = re.sub(disallowed, "", card_text)
   return card_text.lower()
 

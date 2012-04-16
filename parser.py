@@ -228,7 +228,7 @@ def p_conjoined_ability(p):
   p[0] = unimplemented()
 
 def p_ability_post_parenthetical(p):
-  'ability : ability parenthetical'
+  'ability : ability parenthetical PERIOD'
   p[0] = unimplemented()
 
 def p_ability(p):
@@ -237,10 +237,6 @@ def p_ability(p):
 
 def p_ability_parenthetical(p):
   'ability : ability_part parenthetical PERIOD'
-  p[0] = unimplemented()
-
-def p_ability_parenthetical_includes_period(p):
-  'ability : ability_part parenthetical'
   p[0] = unimplemented()
 
 def p_ability_keyword_noperiod(p):
@@ -602,6 +598,10 @@ def p_conditional_action(p):
 
 def p_conditional_backref_action(p):
   'conditional_part : DO'
+  p[0] = unimplemented()
+
+def p_conditional_on_battlefield_contraction(p):
+  'conditional_part : ON THE BATTLEFIELD' #for it's
   p[0] = unimplemented()
 
 def p_conditional_on_battlefield(p):
