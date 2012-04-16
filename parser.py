@@ -379,6 +379,10 @@ def p_event_conditional(p):
   'event : event conditional'
   p[0] = unimplemented()
 
+def p_event_phase(p):
+  'event : BEGIN YOUR phase'
+  p[0] = unimplemented()
+
 def p_phase_turn(p):
   'phase : TURN'
   p[0] = unimplemented()
@@ -398,6 +402,10 @@ def p_phase_upkeep(p):
 
 def p_phase_plural(p):
   'phase : phase STEPS'
+  p[0] = unimplemented()
+
+def p_time_backref_that(p):
+  'time : THAT time'
   p[0] = unimplemented()
 
 def p_time_sorc_cast(p):
@@ -480,6 +488,10 @@ def p_whenever(p):
   'when : WHENEVER'
   p[0] = unimplemented()
 
+def p_trigger_event(p):
+  'trigger : IF event'
+  p[0] = unimplemented()
+
 def p_trigger_time(p):
   'trigger : time'
   p[0] = unimplemented()
@@ -506,6 +518,10 @@ def p_trigger_cast(p):
 
 def p_trigger__mana_tapped(p):
   'trigger : when object IS TAPPED FOR MANA'
+  p[0] = unimplemented()
+
+def p_trigger_conditional(p):
+  'trigger : trigger WHILE conditional'
   p[0] = unimplemented()
 
 def p_cant(p):
@@ -877,6 +893,14 @@ def p_affect_mana_release(p):
 
 def p_affect_discard(p):
   'affect_part : object discard object'
+  p[0] = unimplemented()
+
+def p_affect_skip(p):
+  'affect_part : SKIP time'
+  p[0] = unimplemented()
+
+def p_affect_replacement(p):
+  'affect_part : affect_part INSTEAD'
   p[0] = unimplemented()
 
 def p_mana_colored(p):
@@ -1420,11 +1444,11 @@ if __name__ == '__main__':
       try:
         parse(name, card_text)
         if DEBUG:
-          print name
+          print name, id
         else:
           print ".",
       except Exception, e:
         print ""
-        print name
+        print name, id
         print '\n'.join(str(x) for x in tokenize(name, card_text))
         raise
