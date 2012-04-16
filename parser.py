@@ -363,6 +363,10 @@ def p_damage_type_combat(p):
   'damage_type : COMBAT DAMAGE'
   p[0] = unimplemented()
 
+def p_event_untap(p):
+  'event : UNTAP math_exp object DURING time'
+  p[0] = unimplemented()
+
 def p_event_hypothetical(p):
   'event : object WOULD event'
   p[0] = unimplemented()
@@ -967,6 +971,10 @@ def p_math_or_gt(p):
   'math_exp : math_exp OR GREATER'
   p[0] = unimplemented()
 
+def p_math_mt(p):
+  'math_exp : MORE THAN math_exp'
+  p[0] = unimplemented()
+
 def p_math_gt(p):
   'math_exp : GREATER THAN math_exp'
   p[0] = unimplemented()
@@ -1251,6 +1259,10 @@ def p_type_players(p):
 def p_type_player(p):
   'type : PLAYER'
   p[0] = p[1]
+
+def p_type_player_plural(p):
+  'type : PLAYERS'
+  p[0] = unimplemented()
 
 def p_type_opponent(p):
   'type : OPPONENT'
