@@ -336,6 +336,15 @@ def p_paren_word(p):
                 | EXCEPT
                 | FLYING
                 | REACH
+                | DEALS
+                | BEFORE
+                | FIRST
+                | STRIKE
+                | TARGETED
+                | DEALT
+                | ENCHANTED
+                | ANYTHING
+                | color
                 | PRODUCES'''
   p[0] = unimplemented()
 
@@ -722,6 +731,14 @@ def p_keyword_flying(p):
 
 def p_keyword_enchant(p):
   'keyword : ENCHANT object'
+  p[0] = unimplemented()
+
+def p_keyword_first_strike(p):
+  'keyword : FIRST STRIKE'
+  p[0] = unimplemented()
+
+def p_keyword_protection(p):
+  'keyword : PROTECTION FROM object'
   p[0] = unimplemented()
 
 def p_change_desc_single(p):
@@ -1174,6 +1191,10 @@ def p_object_each(p):
 
 def p_object_self(p):
   'object : TILDE'
+  p[0] = unimplemented()
+
+def p_object_all_things_of_color(p):
+  'object : color'
   p[0] = unimplemented()
 
 def p_attribute_hand(p):
