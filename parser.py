@@ -480,8 +480,12 @@ def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
   p[0] = unimplemented()
 
-def p_ltb(p):
+def p_ltb_graveyard(p):
   'ltb : IS PUT INTO A GRAVEYARD FROM THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_ltb(p):
+  'ltb : LEAVES THE BATTLEFIELD'
   p[0] = unimplemented()
 
 def p_when(p):
@@ -764,8 +768,37 @@ def p_affect_recur(p):
   'affect : affect affect_part'
   p[0] = unimplemented()
 
+def p_affect_explicit_conjunction(p):
+  'affect : affect AND affect_part'
+  p[0] = unimplemented()
+
+def p_affect_sacrifice(p):
+  'affect_part : object SACRIFICES object'
+  p[0] = unimplemented()
+
+def p_affect_lose_ability(p):
+  'affect_part : object LOSES QUOTE ability QUOTE'
+  p[0] = unimplemented()
+
+def p_conjoined_ability_part(p):
+  'affect_part : affect_part AND affect_part'
+  p[0] = unimplemented()
+
+def p_affect_gain_ability(p):
+  'affect_part : object GAINS QUOTE ability QUOTE'
+  p[0] = unimplemented()
+
+def p_return(p):
+  'affect_part : RETURN object TO zone'
+  p[0] = unimplemented()
+
+def p_attach(p):
+  'affect_part : ATTACH object TO object'
+  p[0] = unimplemented()
+
 def p_affect_dont_untap(p):
   'affect_part : object dont UNTAP'
+  p[0] = unimplemented()
 
 def p_affect_no_hand_size(p):
   'affect_part : object have NO MAXIMUM HAND SIZE'
@@ -947,6 +980,10 @@ def p_adds(p):
   'add : ADDS'
   p[0] = unimplemented()
 
+def p_zone_onto(p):
+  'zone : ONTO zone'
+  p[0] = unimplemented()
+
 def p_zone_top_library(p):
   'zone : ON TOP OF object LIBRARY'
   p[0] = unimplemented()
@@ -957,6 +994,14 @@ def p_zone_graveyard(p):
 
 def p_zone_any_graveyard(p):
   'zone : IN A GRAVEYARD'
+  p[0] = unimplemented()
+
+def p_zone_battlefield(p):
+  'zone : THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_zone_controller(p):
+  'zone : zone UNDER object CONTROL'
   p[0] = unimplemented()
 
 def p_but_zone_replacement(p):
@@ -1027,6 +1072,10 @@ def p_qualifier_recur(p):
   'qualifier : qualifier qualifier_part'
   p[0] = unimplemented()
 
+def p_qualifier_enchanted(p):
+  'qualifier_part : ENCHANTED'
+  p[0] = unimplemented()
+
 def p_qualifier_retain_property(p):
   'qualifier_part : THAT being_verb STILL object'
   p[0] = unimplemented()
@@ -1053,6 +1102,10 @@ def p_qualifier_card(p):
 
 def p_qualifier_zone(p):
   'qualifier_part : zone'
+  p[0] = unimplemented()
+
+def p_qualifier_zone_with(p):
+  'qualifier_part : PUT zone WITH object'
   p[0] = unimplemented()
 
 def p_qualifier_held(p):
