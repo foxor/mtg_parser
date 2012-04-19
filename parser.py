@@ -263,10 +263,6 @@ def p_ability_activated(p):
   'ability_part : cost COLON ability_part'
   p[0] = unimplemented()
 
-def p_ability_static(p):
-  'ability_part : affect time'
-  p[0] = unimplemented()
-
 def p_ability_affect(p):
   'ability_part : affect'
   p[0] = unimplemented()
@@ -431,6 +427,10 @@ def p_time_sorc_cast(p):
 
 def p_time_ephemeral(p):
   'time : UNTIL time'
+  p[0] = unimplemented()
+
+def p_time_before(p):
+  'time : BEFORE PLAYING'
   p[0] = unimplemented()
 
 def p_time_eo(p):
@@ -599,6 +599,10 @@ def p_conditional_time(p):
 
 def p_conditional_by_type(p):
   'conditional_part : BY type'
+  p[0] = unimplemented()
+
+def p_conditional_ante(p):
+  'conditional_part : object NOT PLAYING FOR ANTE'
   p[0] = unimplemented()
 
 def p_conditional_untapped(p):
@@ -797,6 +801,10 @@ def p_affect_explicit_conjunction(p):
   'affect : affect AND affect_part'
   p[0] = unimplemented()
 
+def p_affect_conditional_affect(p):
+  'affect : affect IF conditional'
+  p[0] = unimplemented()
+
 def p_affect_sacrifice(p):
   'affect_part : object SACRIFICES object'
   p[0] = unimplemented()
@@ -881,6 +889,10 @@ def p_affect_resolve_optional_affect(p):
   'affect_part : object MAY affect_part'
   p[0] = unimplemented()
 
+def p_ability_static(p):
+  'affect_part : affect_part time'
+  p[0] = unimplemented()
+
 def p_affect_conditional(p):
   'affect_part : IF conditional COMMA affect'
   p[0] = unimplemented()
@@ -903,6 +915,10 @@ def p_affect_put_tokens(p):
 
 def p_affect_remove_counters(p):
   'affect_part : REMOVE math_exp counter FROM object'
+  p[0] = unimplemented()
+
+def p_affect_remove_card(p):
+  'affect_part : REMOVE object FROM zone'
   p[0] = unimplemented()
 
 def p_affect_life_gain(p):
@@ -1023,6 +1039,10 @@ def p_zone_any_graveyard(p):
 
 def p_zone_battlefield(p):
   'zone : THE BATTLEFIELD'
+  p[0] = unimplemented()
+
+def p_zone_deck(p):
+  'zone : YOUR DECK'
   p[0] = unimplemented()
 
 def p_zone_controller(p):
@@ -1251,6 +1271,10 @@ def p_backref_its(p):
 
 def p_backref_possessive(p):
   'backref : backref APOSTROPHE S'
+  p[0] = unimplemented()
+
+def p_backref_being(p):
+  'backref : backref APOSTROPHE RE'
   p[0] = unimplemented()
 
 def p_type_list_term(p):
