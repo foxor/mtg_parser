@@ -345,6 +345,10 @@ def p_paren_word(p):
                 | ENCHANTED
                 | ANYTHING
                 | color
+                | UNBLOCKABLE
+                | SWAMP
+                | LONG
+                | DEFENDING
                 | PRODUCES'''
   p[0] = unimplemented()
 
@@ -739,6 +743,10 @@ def p_keyword_first_strike(p):
 
 def p_keyword_protection(p):
   'keyword : PROTECTION FROM object'
+  p[0] = unimplemented()
+
+def p_keyword_swampwalk(p):
+  'keyword : SWAMPWALK'
   p[0] = unimplemented()
 
 def p_change_desc_single(p):
