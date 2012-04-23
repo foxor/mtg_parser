@@ -805,6 +805,10 @@ def p_affect_conditional_affect(p):
   'affect : affect IF conditional'
   p[0] = unimplemented()
 
+def p_affect_order(p):
+  'affect_part : THEN affect_part'
+  p[0] = unimplemented()
+
 def p_affect_sacrifice(p):
   'affect_part : object SACRIFICES object'
   p[0] = unimplemented()
@@ -961,12 +965,20 @@ def p_affect_but(p):
   'affect_part : affect_part COMMA BUT but'
   p[0] = unimplemented()
 
+def p_affect_conjoin(p):
+  'affect_part : affect_part COMMA affect_part'
+  p[0] = unimplemented()
+
 def p_affect_damage(p):
   'affect_part : object DEALS math_exp DAMAGE TO object'
   p[0] = damage_affect(p[3], p[6])
 
 def p_affect_add_mana_self(p):
   'affect_part : add cost TO YOUR MANA POOL'
+  p[0] = unimplemented()
+
+def p_affect_add_ante(p):
+  'affect_part : add object TO THE ANTE'
   p[0] = unimplemented()
 
 def p_affect_add_mana_object(p):
@@ -1025,8 +1037,12 @@ def p_zone_onto(p):
   'zone : ONTO zone'
   p[0] = unimplemented()
 
+def p_zone_library(p):
+  'zone : YOUR LIBRARY'
+  p[0] = unimplemented()
+
 def p_zone_top_library(p):
-  'zone : ON TOP OF object LIBRARY'
+  'zone : ON TOP OF YOUR LIBRARY'
   p[0] = unimplemented()
 
 def p_zone_graveyard(p):
@@ -1169,6 +1185,10 @@ def p_qualifier_replacement(p):
   'qualifier_part : INSTEAD'
   p[0] = unimplemented()
 
+def p_qualifier_top_card(p):
+  'qualifier_part : THE TOP CARD OF'
+  p[0] = unimplemented()
+
 def p_controller(p):
   'controller : CONTROLLER'
   pass
@@ -1199,6 +1219,10 @@ def p_object_backreference_controller(p):
 
 def p_object_prequalified_type(p):
   'object : qualifier type'
+  p[0] = unimplemented()
+
+def p_object_prequalified_zone(p):
+  'object : qualifier zone'
   p[0] = unimplemented()
 
 def p_object_qualified(p):
