@@ -465,6 +465,10 @@ def p_time_draw(p):
   'time : object DRAW STEP'
   p[0] = unimplemented()
 
+def p_time_the(p):
+  'time : THE time OF qualifier object APOSTROPHE S CONTROLLER'
+  p[0] = unimplemented()
+
 def p_time_beginning_start(p):
   'time : AT THE BEGINNING OF time'
   p[0] = unimplemented()
@@ -1253,52 +1257,56 @@ def p_attribute_hand(p):
   'attribute : HAND'
   p[0] = unimplemented()
 
+def p_backref_top(p):
+  'backref : backref_part'
+  p[0] = unimplemented()
+
 def p_backref_self(p):
   'backref : '
   p[0] = unimplemented()
 
 def p_backref_chosen_player(p):
-  'backref : THE CHOSEN type'
+  'backref_part : THE CHOSEN type'
   p[0] = unimplemented()
 
 def p_backref_by_type(p):
-  'backref : THE type'
+  'backref_part : THE type'
   p[0] = unimplemented()
 
 def p_backref_type(p):
-  'backref : THAT type'
+  'backref_part : THAT type'
   p[0] = unimplemented()
 
 def p_backref_gendered_player(p):
-  'backref : HIS OR HER'
+  'backref_part : HIS OR HER'
   p[0] = unimplemented()
 
 def p_backref_their(p):
-  'backref : THEIR'
+  'backref_part : THEIR'
   p[0] = unimplemented()
 
 def p_backref_it(p):
-  'backref : IT'
+  'backref_part : IT'
   p[0] = unimplemented()
 
 def p_backref_your(p):
-  'backref : YOUR'
+  'backref_part : YOUR'
   p[0] = unimplemented()
 
 def p_backref_you(p):
-  'backref : YOU'
+  'backref_part : YOU'
   p[0] = unimplemented()
 
 def p_backref_its(p):
-  'backref : ITS' #english special case of IT APOSTROPHE S
+  'backref_part : ITS' #english special case of IT APOSTROPHE S
   p[0] = unimplemented()
 
 def p_backref_possessive(p):
-  'backref : backref APOSTROPHE S'
+  'backref_part : backref_part APOSTROPHE S'
   p[0] = unimplemented()
 
 def p_backref_being(p):
-  'backref : backref APOSTROPHE RE'
+  'backref_part : backref_part APOSTROPHE RE'
   p[0] = unimplemented()
 
 def p_type_list_term(p):
