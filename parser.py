@@ -1588,11 +1588,11 @@ def p_color_green(p):
 
 def p_color_blue(p):
   'color : BLUE'
-  p[0] = blue
+  p[0] = blue()
 
 def p_color_black(p):
   'color : BLACK'
-  p[0] = black
+  p[0] = black()
 
 def p_color_less(p):
   'color : COLORLESS'
