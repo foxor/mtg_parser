@@ -813,6 +813,10 @@ def p_affect_order(p):
   'affect_part : THEN affect_part'
   p[0] = unimplemented()
 
+def p_affect_counterspell(p):
+  'affect_part : COUNTER object'
+  p[0] = unimplemented()
+
 def p_affect_sacrifice(p):
   'affect_part : object SACRIFICES object'
   p[0] = unimplemented()
@@ -1340,6 +1344,10 @@ def p_type_list_disjunction(p):
 
 def p_type_list_conjunction(p):
   'type_list : type_list AND card_type'
+  p[0] = unimplemented()
+
+def p_type_qualified(p):
+  'type : qualifier type'
   p[0] = unimplemented()
 
 def p_type_choice(p):
