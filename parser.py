@@ -586,7 +586,7 @@ def p_conditional_power(p):
   p[0] = unimplemented()
 
 def p_conditional_discard(p):
-  'conditional_part : object CAUSES object TO discard object'
+  'conditional_part : CAUSES object TO discard object'
   p[0] = unimplemented()
 
 def p_conditional_cyclopean(p):
@@ -606,7 +606,7 @@ def p_conditional_by_type(p):
   p[0] = unimplemented()
 
 def p_conditional_ante(p):
-  'conditional_part : object NOT PLAYING FOR ANTE'
+  'conditional_part : NOT PLAYING FOR ANTE'
   p[0] = unimplemented()
 
 def p_conditional_untapped(p):
@@ -815,6 +815,14 @@ def p_affect_order(p):
 
 def p_affect_sacrifice(p):
   'affect_part : object SACRIFICES object'
+  p[0] = unimplemented()
+
+def p_affect_ownership(p):
+  'affect_part : object OWN object'
+  p[0] = unimplemented()
+
+def p_affect_exchange(p):
+  'affect_part : EXCHANGE object_part WITH object'
   p[0] = unimplemented()
 
 def p_affect_lose_ability(p):
@@ -1057,6 +1065,10 @@ def p_zone_any_graveyard(p):
   'zone : IN A GRAVEYARD'
   p[0] = unimplemented()
 
+def p_zone_ante(p):
+  'zone : IN THE ANTE'
+  p[0] = unimplemented()
+
 def p_zone_battlefield(p):
   'zone : THE BATTLEFIELD'
   p[0] = unimplemented()
@@ -1201,56 +1213,60 @@ def p_controllers(p):
   'controller : CONTROLLERS APOSTROPHE'
   pass
 
+def p_object_part(p):
+  'object : object_part'
+  p[0] = unimplemented()
+
 def p_object_conditional(p):
-  'object : conditional'
+  'object_part : conditional'
   p[0] = unimplemented()
 
-def p_object_with(p):
-  'object : object WITH conditional'
+def p_object_part_with(p):
+  'object_part : object_part WITH conditional_part'
   p[0] = unimplemented()
 
-def p_object_num(p):
-  'object : math_exp type_list'
+def p_object_part_num(p):
+  'object_part : math_exp type_list'
   p[0] = unimplemented()
 
-def p_object_backreference(p):
-  'object : backref'
+def p_object_part_backreference(p):
+  'object_part : backref'
   p[0] = unimplemented()
 
-def p_object_backreference_controller(p):
-  'object : backref controller'
+def p_object_part_backreference_controller(p):
+  'object_part : backref controller'
   p[0] = unimplemented()
 
-def p_object_prequalified_type(p):
-  'object : qualifier type'
+def p_object_part_prequalified_type(p):
+  'object_part : qualifier type'
   p[0] = unimplemented()
 
-def p_object_prequalified_zone(p):
-  'object : qualifier zone'
+def p_object_part_prequalified_zone(p):
+  'object_part : qualifier zone'
   p[0] = unimplemented()
 
-def p_object_qualified(p):
+def p_object_part_qualified(p):
   'object : object qualifier'
   p[0] = unimplemented()
 
-def p_object_attribute(p):
+def p_object_part_attribute(p):
   'object : object attribute'
   p[0] = unimplemented()
 
-def p_object_target(p):
-  'object : TARGET type_list'
+def p_object_part_target(p):
+  'object_part : TARGET type_list'
   p[0] = target(p[2])
 
-def p_object_each(p):
-  'object : EACH type_list'
+def p_object_part_each(p):
+  'object_part : EACH type_list'
   p[0] = unimplemented()
 
-def p_object_self(p):
-  'object : TILDE'
+def p_object_part_self(p):
+  'object_part : TILDE'
   p[0] = unimplemented()
 
-def p_object_all_things_of_color(p):
-  'object : color'
+def p_object_part_all_things_of_color(p):
+  'object_part : color'
   p[0] = unimplemented()
 
 def p_attribute_hand(p):
