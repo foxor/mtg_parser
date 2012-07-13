@@ -346,7 +346,7 @@ def p_paren_word(p):
                 | LONG
                 | DEFENDING
                 | PRODUCES'''
-  p[0] = unimplemented()
+  print "paren"
 
 def p_parenthisized(p):
   'parenthisized : paren_word parenthisized'
