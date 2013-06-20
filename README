@@ -1,0 +1,11 @@
+Magic: the Gathering Parser
+===========================
+
+The idea is to treat the words on the oracle text of magic cards as a programming language.  This project aims to parse that language, and to create a virtual machine, wherein that language can be used to play games.
+
+It should be noted that all cards and card text are property of Wizards of the Coast.  I hope I'm not doing anything illegal, this project is only for personal use.
+
+Development Status
+==================
+
+I stopped working on this for a while because old cards are really hard to parse.  I parsed ~80 of them starting from the first card of alpha, but they are very hard.  Therefore I'm starting with just the modern set of cards.

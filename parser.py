@@ -345,8 +345,13 @@ def p_paren_word(p):
                 | SWAMP
                 | LONG
                 | DEFENDING
+                | SYMBOLS
+                | ON
+                | PERMANENT
+                | UNCHANGED
+                | REMAIN
                 | PRODUCES'''
-  print "paren"
+  print "paren word"
 
 def p_parenthisized(p):
   'parenthisized : paren_word parenthisized'
@@ -775,6 +780,10 @@ def p_change_type_chain(p):
 
 def p_change_qualified(p):
   'change_desc : change_desc qualifier'
+  p[0] = unimplemented()
+
+def p_change_color(p):
+  'change_desc : color'
   p[0] = unimplemented()
 
 def p_being_verb_are(p):
@@ -1342,6 +1351,10 @@ def p_type_list_disjunction(p):
   'type_list : type_list OR card_type'
   p[0] = unimplemented()
 
+def p_deathlance(p):
+  'type_list : SPELL OR PERMANENT'
+  p[0] = unimplemented()
+
 def p_type_list_conjunction(p):
   'type_list : type_list AND card_type'
   p[0] = unimplemented()
@@ -1363,11 +1376,11 @@ def p_type_effect(p):
   p[0] = p[1]
 
 def p_type_permanent(p):
-  'type : PERMANENT'
+  'card_type : PERMANENT'
   p[0] = p[1]
 
 def p_type_permanent(p):
-  'type : PERMANENTS'
+  'card_type : PERMANENTS'
   p[0] = p[1]
 
 def p_type_card(p):
@@ -1631,7 +1644,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` LIMIT 80")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 80")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
