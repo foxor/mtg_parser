@@ -401,6 +401,10 @@ def p_event_phase(p):
   'event : BEGIN YOUR phase'
   p[0] = unimplemented()
 
+def p_event_taps(p):
+  'event : TAPS object FOR MANA'
+  p[0] = unimplemented()
+
 def p_phase_turn(p):
   'phase : TURN'
   p[0] = unimplemented()
@@ -548,6 +552,10 @@ def p_trigger_cast(p):
 
 def p_trigger__mana_tapped(p):
   'trigger : when object IS TAPPED FOR MANA'
+  p[0] = unimplemented()
+
+def p_trigger_generic(p):
+  'trigger : when object event'
   p[0] = unimplemented()
 
 def p_trigger_conditional(p):
@@ -1162,6 +1170,10 @@ def p_qualifier_recur(p):
   'qualifier : qualifier qualifier_part'
   p[0] = unimplemented()
 
+def p_qualifier_attacking(p):
+  'qualifier_part : ATTACKING'
+  p[0] = unimplemented()
+
 def p_qualifier_enchanted(p):
   'qualifier_part : ENCHANTED'
   p[0] = unimplemented()
@@ -1393,6 +1405,10 @@ def p_type_damage_source(p):
 
 def p_type_card_type(p):
   'type : card_type'
+  p[0] = unimplemented()
+
+def p_type_qualified_card_type(p):
+  'type : qualifier card_type'
   p[0] = unimplemented()
 
 def p_type_artifact(p):
