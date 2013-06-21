@@ -53,6 +53,11 @@ class AST(object):
     self.walk('represent', repr_args=repr_args)
     return '\n'.join(repr_args['repr'])
 
+class number(AST):
+  def __init__(self, value):
+    super(number, self).__init__()
+    self.value = value;
+
 class spell(AST):
   def __init__(self, text, cost, name):
     super(spell, self).__init__()
@@ -115,7 +120,8 @@ class BasicLand(AST):
 
 class unimplemented(AST):
   def walk(*args, **kwargs):
-    raise Exception("Not Implemented")
+    if not DEBUG:
+      raise Exception("Not Implemented")
 
 class ability(AST):
   pass
@@ -658,10 +664,6 @@ def p_conditional_never_flipped(p):
   'conditional_part : HAS NOT BEEN TURNED FACE UP'
   p[0] = unimplemented()
 
-def p_conditional_illusory_unflip(p):
-  'conditional_part : WOULD ASSIGN OR DEAL DAMAGE COMMA BE DEALT DAMAGE COMMA OR BECOME TAPPED'
-  p[0] = unimplemented()
-
 def p_conditional_chaos_orb(p):
   'conditional_part : TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
   p[0] = unimplemented()
@@ -830,6 +832,10 @@ def p_affect_conditional_affect(p):
   'affect : affect IF conditional'
   p[0] = unimplemented()
 
+def p_affect_repeated(p):
+  'affect : affect FOR EACH type_list'
+  p[0] = unimplemented()
+
 def p_affect_order(p):
   'affect_part : THEN affect_part'
   p[0] = unimplemented()
@@ -976,6 +982,10 @@ def p_affect_prevent_next(p):
 
 def p_affect_prevent_backref(p):
   'affect_part : PREVENT math_exp OF THAT DAMAGE'
+  p[0] = unimplemented()
+
+def p_affect_prevent_unlimited(p):
+  'affect_part : PREVENT THAT DAMAGE'
   p[0] = unimplemented()
 
 def p_affect_destroy(p):
@@ -1242,6 +1252,10 @@ def p_qualifier_top_card(p):
   'qualifier_part : THE TOP CARD OF'
   p[0] = unimplemented()
 
+def p_qualifier_controlled(p):
+  'qualifier_part : object CONTROL'
+  p[0] = unimplemented()
+
 def p_controller(p):
   'controller : CONTROLLER'
   pass
@@ -1252,6 +1266,10 @@ def p_controllers(p):
 
 def p_object_part(p):
   'object : object_part'
+  p[0] = unimplemented()
+
+def p_numbered_object(p):
+  'object : math_exp object'
   p[0] = unimplemented()
 
 def p_object_conditional(p):
@@ -1381,6 +1399,10 @@ def p_deathlance(p):
 
 def p_type_list_conjunction(p):
   'type_list : type_list AND card_type'
+  p[0] = unimplemented()
+
+def p_type_list_qualified(p):
+  'type_list : type_list qualifier'
   p[0] = unimplemented()
 
 def p_type_qualified(p):
@@ -1521,7 +1543,7 @@ def p_an(p):
 
 def p_number_num(p):
   'number : NUM'
-  p[0] = int(p[1])
+  p[0] = unimplemented()
 
 def p_number_bracketed(p):
   'number : OPENBRACKET OPENBRACKET OPENBRACKET number CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
@@ -1533,7 +1555,7 @@ def p_num_all(p):
 
 def p_num_a(p):
   'number : a'
-  p[0] = 1
+  p[0] = number(1)
 
 def p_number_x(p):
   'number : X'
@@ -1541,63 +1563,63 @@ def p_number_x(p):
 
 def p_number_one(p):
   'number : ONE'
-  p[0] = 1
+  p[0] = number(1)
 
 def p_number_two(p):
   'number : TWO'
-  p[0] = 2
+  p[0] = number(2)
 
 def p_number_three(p):
   'number : THREE'
-  p[0] = 3
+  p[0] = number(3)
 
 def p_number_four(p):
   'number : FOUR'
-  p[0] = 4
+  p[0] = number(4)
 
 def p_number_five(p):
   'number : FIVE'
-  p[0] = 5
+  p[0] = number(5)
 
 def p_number_six(p):
   'number : SIX'
-  p[0] = 6
+  p[0] = number(6)
 
 def p_number_seven(p):
   'number : SEVEN'
-  p[0] = 7
+  p[0] = number(7)
 
 def p_number_eight(p):
   'number : EIGHT'
-  p[0] = 8
+  p[0] = number(8)
 
 def p_number_nine(p):
   'number : NINE'
-  p[0] = 9
+  p[0] = number(9)
 
 def p_number_ten(p):
   'number : TEN'
-  p[0] = 10
+  p[0] = number(10)
 
 #def p_number_eleven(p):
 #  'number : ELEVEN'
-#  p[0] = 11
+#  p[0] = number(11)
 
 def p_number_twelve(p):
   'number : TWELVE'
-  p[0] = 12
+  p[0] = number(12)
 
 def p_number_thirteen(p):
   'number : THIRTEEN'
-  p[0] = 13
+  p[0] = number(13)
 
 #def p_number_fourteen(p):
 #  'number : FOURTEEN'
-#  p[0] = 14
+#  p[0] = number(14)
 
 def p_number_fifteen(p):
   'number : FIFTEEN'
-  p[0] = 15
+  p[0] = number(15)
 
 def p_cost_term(p):
   'cost : cost_part'
@@ -1666,7 +1688,7 @@ def p_color_less(p):
 parser = yacc.yacc(debug=True)
 
 def parse(card_name, card_text):
-  return parser.parse(lexer=tokenize(card_name, card_text))
+  return parser.parse(lexer=tokenize(card_name, card_text), debug=1 if DEBUG else 0)
 
 if __name__ == '__main__':
   import MySQLdb
