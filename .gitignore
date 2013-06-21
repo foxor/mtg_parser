@@ -3,3 +3,7 @@ card_database/*
 parsetab.py
 password.py
 token_out.py
+out
+*.swp
+parser.out
+ply
