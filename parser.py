@@ -966,6 +966,10 @@ def p_affect_life_gain(p):
   'affect_part : object GAIN math_exp LIFE'
   p[0] = unimplemented()
 
+def p_affect_variable_life_gain(p):
+  'affect_part : object GAIN LIFE math_exp'
+  p[0] = unimplemented()
+
 def p_affect_prevent_next(p):
   'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object THIS TURN'
   p[0] = unimplemented()
@@ -1114,10 +1118,6 @@ def p_where(p):
   'where : X IS math_exp'
   p[0] = unimplemented()
 
-def p_math_empty(p):
-  'math_exp :'
-  p[0] = unimplemented()
-
 def p_math_backref(p):
   'math_exp : THAT'
   p[0] = unimplemented()
@@ -1160,6 +1160,14 @@ def p_math_unary_plus(p):
 
 def p_math_const(p):
   'math_exp : number'
+  p[0] = unimplemented()
+
+def p_math_equals(p):
+  'math_exp : EQUAL TO math_exp'
+  p[0] = unimplemented()
+
+def p_math_power(p):
+  'math_exp : object POWER'
   p[0] = unimplemented()
 
 def p_count_cards_hand(p):
