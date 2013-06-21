@@ -405,6 +405,10 @@ def p_event_taps(p):
   'event : TAPS object FOR MANA'
   p[0] = unimplemented()
 
+def p_event_blocks(p):
+  'event : BLOCKS'
+  p[0] = unimplemented()
+
 def p_phase_turn(p):
   'phase : TURN'
   p[0] = unimplemented()
