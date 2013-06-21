@@ -395,6 +395,14 @@ def p_event_unblocked(p):
   'event : DEAL damage_type TO object'
   p[0] = unimplemented()
 
+def p_event_block(p):
+  'event : BLOCK'
+  p[0] = unimplemented()
+
+def p_event_block_object(p):
+  'event : BLOCK object'
+  p[0] = unimplemented()
+
 def p_event_blocked(p):
   'event : BE BLOCKED'
   p[0] = unimplemented()
@@ -1140,6 +1148,10 @@ def p_math_or_gt(p):
   'math_exp : math_exp OR GREATER'
   p[0] = unimplemented()
 
+def p_math_or_lt(p):
+  'math_exp : math_exp OR LESS'
+  p[0] = unimplemented()
+
 def p_math_mt(p):
   'math_exp : MORE THAN math_exp'
   p[0] = unimplemented()
@@ -1314,6 +1326,10 @@ def p_object_part_target(p):
 
 def p_object_part_each(p):
   'object_part : EACH type_list'
+  p[0] = unimplemented()
+
+def p_object_part_all(p):
+  'object_part : type_list'
   p[0] = unimplemented()
 
 def p_object_part_self(p):
@@ -1699,11 +1715,14 @@ if __name__ == '__main__':
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
       try:
-        parse(name, card_text)
         if DEBUG:
-          print name, id
+          print "Parsing: ", name, card_text, id
         else:
           print ".",
+        parse(name, card_text)
+        if DEBUG:
+          print "Parsed: ", name, card_text, id
+          print
       except Exception, e:
         print ""
         print name, id
