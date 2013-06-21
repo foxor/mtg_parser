@@ -4,6 +4,7 @@ parsetab.py
 password.py
 token_out.py
 out
+error
 *.swp
 parser.out
 ply
