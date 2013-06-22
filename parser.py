@@ -281,8 +281,16 @@ def p_ability_event_impossible(p):
   'ability_part : object cant event'
   p[0] = unimplemented()
 
-def p_ability_resolution_restriction(p):
-  'ability_part : THIS ABILITY cant CAUSE status TO BE math_exp'
+def p_ability_replacement(p):
+  'ability_part : replacement_source replacement_sink'
+  p[0] = unimplemented()
+
+def p_replacement_source_damage(p):
+  'replacement_source : math_exp DAMAGE THAT WOULD BE DEALT TO object'
+  p[0] = unimplemented()
+
+def p_replacement_sink_damage(p):
+  'replacement_sink : IS DEALT TO object INSTEAD'
   p[0] = unimplemented()
 
 def p_paren_word(p):
@@ -468,8 +476,8 @@ def p_time_persistant(p):
   'time : time FOR THE REST OF THE GAME'
   p[0] = unimplemented()
 
-def p_time_till_eot(p):
-  'time : time THIS TURN'
+def p_time_qualified(p):
+  'time : time qualifier'
   p[0] = unimplemented()
 
 def p_trigger_next(p):
@@ -601,7 +609,7 @@ def p_action_blocked(p):
   p[0] = unimplemented()
 
 def p_conditional(p):
-  'conditional : object conditional_part'
+  'conditional : conditional_part'
   p[0] = unimplemented()
 
 def p_conditional_conjunction(p):
@@ -630,10 +638,6 @@ def p_conditional_cyclopean_2(p):
 
 def p_conditional_time(p):
   'conditional_part : ATTACKED OR BLOCKED THIS COMBAT'
-  p[0] = unimplemented()
-
-def p_conditional_by_type(p):
-  'conditional_part : BY type'
   p[0] = unimplemented()
 
 def p_conditional_ante(p):
@@ -940,6 +944,10 @@ def p_affect_resolve_cost(p):
   'affect_part : PAY cost'
   p[0] = unimplemented()
 
+def p_affect_resolve_manditory_affect(p):
+  'affect_part : object affect_part'
+  p[0] = unimplemented()
+
 def p_affect_resolve_optional_affect(p):
   'affect_part : object MAY affect_part'
   p[0] = unimplemented()
@@ -977,15 +985,15 @@ def p_affect_remove_card(p):
   p[0] = unimplemented()
 
 def p_affect_life_gain(p):
-  'affect_part : object GAIN math_exp LIFE'
+  'affect_part : GAIN math_exp LIFE'
   p[0] = unimplemented()
 
 def p_affect_variable_life_gain(p):
-  'affect_part : object GAIN LIFE math_exp'
+  'affect_part : GAIN LIFE math_exp'
   p[0] = unimplemented()
 
 def p_affect_prevent_next(p):
-  'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object THIS TURN'
+  'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object'
   p[0] = unimplemented()
 
 def p_affect_prevent_backref(p):
@@ -1248,10 +1256,6 @@ def p_qualifier_held(p):
   'qualifier_part : IN object HAND'
   p[0] = unimplemented()
 
-def p_qualifier_illusory_mask_creature(p):
-  'qualifier_part : WHOSE MANA COST COULD BE PAID BY SOME AMOUNT OF COMMA OR ALL OF COMMA THE MANA YOU SPENT ON math_exp'
-  p[0] = unimplemented()
-
 def p_qualifier_illusory_mask_creature_resolved(p):
   'qualifier_part : THAT SPELL BECOMES AS IT RESOLVES'
   p[0] = unimplemented()
@@ -1266,6 +1270,10 @@ def p_qualifier_top_card(p):
 
 def p_qualifier_controlled(p):
   'qualifier_part : object CONTROL'
+  p[0] = unimplemented()
+
+def p_qualifier_this_turn(p):
+  'qualifier_part : THIS TURN'
   p[0] = unimplemented()
 
 def p_controller(p):
@@ -1284,8 +1292,8 @@ def p_numbered_object(p):
   'object : math_exp object'
   p[0] = unimplemented()
 
-def p_object_conditional(p):
-  'object_part : conditional'
+def p_object_part_by(p):
+  'object : object BY object'
   p[0] = unimplemented()
 
 def p_object_part_with(p):
@@ -1346,10 +1354,6 @@ def p_attribute_hand(p):
 
 def p_backref_top(p):
   'backref : backref_part'
-  p[0] = unimplemented()
-
-def p_backref_self(p):
-  'backref : '
   p[0] = unimplemented()
 
 def p_backref_chosen_player(p):
@@ -1710,7 +1714,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 80")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 15")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
@@ -1724,7 +1728,6 @@ if __name__ == '__main__':
           print "Parsed: ", name, card_text, id
           print
       except Exception, e:
-        print ""
+        print
         print name, id
-        print '\n'.join(str(x) for x in tokenize(name, card_text))
         raise
