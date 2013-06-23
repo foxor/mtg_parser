@@ -1334,6 +1334,10 @@ def p_object_part_by(p):
   'object : object BY object'
   p[0] = unimplemented(p)
 
+def p_object_or(p):
+  'object : object OR object_part'
+  p[0] = unimplemented(p)
+
 def p_object_part_with(p):
   'object_part : object_part WITH conditional_part'
   p[0] = unimplemented(p)
@@ -1367,7 +1371,7 @@ def p_object_part_attribute(p):
   p[0] = unimplemented(p)
 
 def p_object_part_target(p):
-  'object_part : TARGET type_list'
+  'object : TARGET object'
   p[0] = target(p[2])
 
 def p_object_part_each(p):
@@ -1447,14 +1451,6 @@ def p_type_list_3(p):
   'type_list : card_type COMMA card_type COMMA'
   p[0] = unimplemented(p)
 
-def p_type_list_disjunction(p):
-  'type_list : type_list OR card_type'
-  p[0] = unimplemented(p)
-
-def p_deathlance(p):
-  'type_list : SPELL OR PERMANENT'
-  p[0] = unimplemented(p)
-
 def p_type_list_conjunction(p):
   'type_list : type_list AND card_type'
   p[0] = unimplemented(p)
@@ -1466,10 +1462,6 @@ def p_type_list_qualified(p):
 def p_type_qualified(p):
   'type : qualifier type'
   p[0] = unimplemented(p)
-
-def p_type_choice(p):
-  'type : type OR type'
-  p[0] = player_choice(p[1], p[3])
 
 def p_type_exclude(p):
   'type : NON MINUS type type'
@@ -1752,7 +1744,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 17")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 18")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
