@@ -377,6 +377,11 @@ def p_paren_word(p):
                 | PERMANENT
                 | UNCHANGED
                 | REMAIN
+                | ATTACKING
+                | DOESN
+                | CAUSE
+                | TILDE
+                | TAP
                 | PRODUCES'''
   print "paren word"
 
@@ -791,6 +796,10 @@ def p_keyword_defender(p):
 
 def p_keyword_regenerate(p):
   'keyword : REGENERATE object'
+  p[0] = unimplemented(p)
+
+def p_keyword_vigilance(p):
+  'keyword : VIGILANCE'
   p[0] = unimplemented(p)
 
 def p_keyword_flying(p):
@@ -1743,7 +1752,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 16")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 17")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
