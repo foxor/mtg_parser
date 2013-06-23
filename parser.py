@@ -395,6 +395,10 @@ def p_event_untap(p):
   'event : UNTAP math_exp object DURING time'
   p[0] = unimplemented()
 
+def p_event_damage(p):
+  'event : object DEALS damage_type TO object'
+  p[0] = unimplemented()
+
 def p_event_hypothetical(p):
   'event : object WOULD event'
   p[0] = unimplemented()
@@ -424,11 +428,27 @@ def p_event_phase(p):
   p[0] = unimplemented()
 
 def p_event_taps(p):
-  'event : TAPS object FOR MANA'
+  'event : object TAPS object FOR MANA'
   p[0] = unimplemented()
 
 def p_event_blocks(p):
-  'event : BLOCKS'
+  'event : object BLOCKS'
+  p[0] = unimplemented()
+
+def p_trigger_etb(p):
+  'event : object etb'
+  p[0] = unimplemented()
+
+def p_trigger_ltb(p):
+  'event : object ltb'
+  p[0] = unimplemented()
+
+def p_trigger_cast(p):
+  'event : object CASTS A color SPELL'
+  p[0] = unimplemented()
+
+def p_trigger__mana_tapped(p):
+  'event : object IS TAPPED FOR MANA'
   p[0] = unimplemented()
 
 def p_phase_turn(p):
@@ -450,6 +470,14 @@ def p_phase_upkeep(p):
 
 def p_phase_plural(p):
   'phase : phase STEPS'
+  p[0] = unimplemented()
+
+def p_phase_explicit(p):
+  'phase : phase PHASE'
+  p[0] = unimplemented()
+
+def p_time_next(p):
+  'time : object NEXT time'
   p[0] = unimplemented()
 
 def p_time_backref_that(p):
@@ -561,27 +589,11 @@ def p_trigger_etb_self(p):
   p[0] = unimplemented()
 
 def p_trigger_etb_choice(p):
-  'trigger : AS object etb'
-  p[0] = unimplemented()
-
-def p_trigger_etb(p):
-  'trigger : when object etb'
-  p[0] = unimplemented()
-
-def p_trigger_ltb(p):
-  'trigger : when object ltb'
-  p[0] = unimplemented()
-
-def p_trigger_cast(p):
-  'trigger : when object CASTS A color SPELL'
-  p[0] = unimplemented()
-
-def p_trigger__mana_tapped(p):
-  'trigger : when object IS TAPPED FOR MANA'
+  'trigger : AS event'
   p[0] = unimplemented()
 
 def p_trigger_generic(p):
-  'trigger : when object event'
+  'trigger : when event'
   p[0] = unimplemented()
 
 def p_trigger_conditional(p):
@@ -848,6 +860,10 @@ def p_affect_repeated(p):
   'affect : affect FOR EACH type_list'
   p[0] = unimplemented()
 
+def p_affect_cause_skip(p):
+  'affect_part : object SKIPS time'
+  p[0] = unimplemented()
+
 def p_affect_order(p):
   'affect_part : THEN affect_part'
   p[0] = unimplemented()
@@ -1037,8 +1053,8 @@ def p_affect_conjoin(p):
   p[0] = unimplemented()
 
 def p_affect_damage(p):
-  'affect_part : object DEALS math_exp DAMAGE TO object'
-  p[0] = damage_affect(p[3], p[6])
+  'affect_part : object DEALS math_exp damage_type TO object'
+  p[0] = unimplemented()
 
 def p_affect_add_mana_self(p):
   'affect_part : add cost TO YOUR MANA POOL'
@@ -1714,7 +1730,7 @@ if __name__ == '__main__':
   import MySQLdb
   from password import password
   _conn = MySQLdb.connect (host = "localhost", user = "root", passwd = password, db = "mtg").cursor()
-  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 15")
+  _conn.execute("SELECT multiverse_id, card_name from `cards` where multiverse_id > 45195 LIMIT 16")
   for id, name in _conn.fetchall():
     _conn.execute("SELECT text from `rules_text` where `card` = %d and flavor = 0" % id)
     for card_text, in _conn.fetchall():
