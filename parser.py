@@ -12,17 +12,22 @@ class AST(object):
     self.children = []
     self.walk_results = []
     if DEBUG:
+      self.production = ""
       stack = inspect.stack()
       for frame in range(1, len(stack)):
         if stack[frame][3] in globals() and ':' in globals()[stack[frame][3]].__doc__:
-          print globals()[stack[frame][3]].__doc__
+          self.production = globals()[stack[frame][3]].__doc__
+          print self.production
           break
 
   def walk(self, name, *args, **kwargs):
     if hasattr(self, "pre" + name):
       getattr(self, "pre" + name)(*args, **kwargs)
     for n, child in enumerate(self.get_children()):
-      self.walk_results[n] = child.walk(name, *args, **kwargs)
+      if (hasattr(child, 'walk')):
+        self.walk_results[n] = child.walk(name, *args, **kwargs)
+      else:
+        self.walk_results[n] = child
     if hasattr(self, name):
       return getattr(self, name)(*args, **kwargs)
     return self.walk_results or self
@@ -36,7 +41,9 @@ class AST(object):
     return self.children
 
   def get_name(self):
-    return "%s" % self.__class__
+    if DEBUG:
+      return "%s" % self.production.split(':')[1].strip()
+    return "%s" % self.__class__.__name__
 
   def prerepresent(self, *args, **kwargs):
     kwargs['repr_args']['repr'] = kwargs['repr_args'].get('repr', []) + [(' ' * kwargs['repr_args'].get('indent', 0)) + self.get_name()]
@@ -119,9 +126,15 @@ class BasicLand(AST):
       print "Already Tapped"
 
 class unimplemented(AST):
-  def walk(*args, **kwargs):
+  def __init__(self, p):
+    super(unimplemented, self).__init__()
+    for child in p[1:]:
+      self.add_child(child)
+
+  def walk(self, *args, **kwargs):
     if not DEBUG:
       raise Exception("Not Implemented")
+    super(unimplemented, self).walk(*args, **kwargs)
 
 class ability(AST):
   pass
@@ -219,7 +232,7 @@ def p_text_affect(p):
 
 def p_text_ability(p):
   'text_part : ability'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_text_cost(p):
   'text_part : cost'
@@ -227,71 +240,71 @@ def p_text_cost(p):
 
 def p_ability_recur(p):
   'ability : ability ability'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conjoined_ability(p):
   'ability : ability THEN ability'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_post_parenthetical(p):
   'ability : ability parenthetical PERIOD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability(p):
   'ability : ability_part PERIOD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_parenthetical(p):
   'ability : ability_part parenthetical PERIOD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_keyword_noperiod(p):
   'ability : keyword'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_keyword(p):
   'ability_part : keyword'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_triggered(p):
   'ability_part : trigger COMMA affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_triggered_nonstack(p):
   'ability_part : trigger WITH affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_triggered_initial_status(p):
   'ability_part : trigger affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_activated(p):
   'ability_part : cost COLON ability_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_affect(p):
   'ability_part : affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_activate_restriction(p):
   'ability_part : ACTIVATE THIS ABILITY ONLY time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_event_impossible(p):
   'ability_part : object cant event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_replacement(p):
   'ability_part : replacement_source replacement_sink'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_replacement_source_damage(p):
   'replacement_source : math_exp DAMAGE THAT WOULD BE DEALT TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_replacement_sink_damage(p):
   'replacement_sink : IS DEALT TO object INSTEAD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_paren_word(p):
   '''paren_word : IN
@@ -369,236 +382,236 @@ def p_paren_word(p):
 
 def p_parenthisized(p):
   'parenthisized : paren_word parenthisized'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_parenthisized_empty(p):
   'parenthisized :'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_parenthetical(p):
   'parenthetical : LPAREN parenthisized RPAREN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_status_counter_count(p):
   'status : THE TOTAL NUMBER OF counter ON object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_damage_type_standard(p):
   'damage_type : DAMAGE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_damage_type_combat(p):
   'damage_type : COMBAT DAMAGE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_untap(p):
   'event : UNTAP math_exp object DURING time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_damage(p):
   'event : object DEALS damage_type TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_hypothetical(p):
   'event : object WOULD event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_unblocked(p):
   'event : DEAL damage_type TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_block(p):
   'event : BLOCK'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_block_object(p):
   'event : BLOCK object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_blocked(p):
   'event : BE BLOCKED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_conditional(p):
   'event : event conditional'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_phase(p):
   'event : BEGIN YOUR phase'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_taps(p):
   'event : object TAPS object FOR MANA'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_event_blocks(p):
   'event : object BLOCKS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_etb(p):
   'event : object etb'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_ltb(p):
   'event : object ltb'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_cast(p):
   'event : object CASTS A color SPELL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger__mana_tapped(p):
   'event : object IS TAPPED FOR MANA'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_turn(p):
   'phase : TURN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_combat(p):
   'phase : COMBAT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_untap(p):
   'phase : UNTAP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_upkeep(p):
   '''phase : UPKEEP
            | UPKEEPS'''
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_plural(p):
   'phase : phase STEPS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_phase_explicit(p):
   'phase : phase PHASE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_next(p):
   'time : object NEXT time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_backref_that(p):
   'time : THAT time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_sorc_cast(p):
   'time : ANY TIME YOU COULD CAST A SORCERY'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_ephemeral(p):
   'time : UNTIL time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_before(p):
   'time : BEFORE PLAYING'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_eo(p):
   'time : END OF phase'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_persistant(p):
   'time : time FOR THE REST OF THE GAME'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_qualified(p):
   'time : time qualifier'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_next(p):
   'time : THE NEXT TIME event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_each(p):
   'time : EACH time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_each_of(p):
   'time : EACH OF time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_upkeep(p):
   'time : object phase'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_draw(p):
   'time : object DRAW STEP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_the(p):
   'time : THE time OF qualifier object APOSTROPHE S CONTROLLER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_beginning_start(p):
   'time : AT THE BEGINNING OF time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_during(p):
   'time : DURING time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_phase(p):
   'time : phase'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_untap(p):
   'time : object UNTAP STEP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_turn(p):
   'time : object TURN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_time_end_combat(p):
   'time : AT END OF COMBAT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_etb(p):
   'etb : ENTERS THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ltb_graveyard(p):
   'ltb : IS PUT INTO A GRAVEYARD FROM THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ltb(p):
   'ltb : LEAVES THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_when(p):
   'when : WHEN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_whenever(p):
   'when : WHENEVER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_event(p):
   'trigger : IF event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_time(p):
   'trigger : time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_etb_self(p):
   'trigger : TILDE etb'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_etb_choice(p):
   'trigger : AS event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_generic(p):
   'trigger : when event'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_trigger_conditional(p):
   'trigger : trigger WHILE conditional'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cant(p):
   'cant : CAN APOSTROPHE T'
@@ -614,87 +627,87 @@ def p_dont(p):
 
 def p_action_attack(p):
   'action : ATTACKED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_action_blocked(p):
   'action : BLOCKED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional(p):
   'conditional : conditional_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_conjunction(p):
   'conditional_part : conditional_part AND conditional_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_contional_or(p):
   'conditional_part : conditional_part OR conditional_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_power(p):
   'conditional_part : POWER math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_discard(p):
   'conditional_part : CAUSES object TO discard object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_cyclopean(p):
   'conditional_part : THAT math_exp counter WAS PUT ONTO WITH object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_cyclopean_2(p):
   'conditional_part : BUT THAT math_exp counter HAS NOT BEEN REMOVED FROM WITH object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_time(p):
   'conditional_part : ATTACKED OR BLOCKED THIS COMBAT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_ante(p):
   'conditional_part : NOT PLAYING FOR ANTE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_untapped(p):
   'conditional_part : IS UNTAPPED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_tapped(p):
   'conditional_part : IS TAPPED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_action(p):
   'conditional_part : action'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_backref_action(p):
   'conditional_part : DO'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_on_battlefield_contraction(p):
   'conditional_part : ON THE BATTLEFIELD' #for it's
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_on_battlefield(p):
   'conditional_part : IS ON THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_has_counter(p):
   'conditional_part : HAS A counter ON IT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_never_flipped(p):
   'conditional_part : HAS NOT BEEN TURNED FACE UP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conditional_chaos_orb(p):
   'conditional_part : TURNS OVER COMPLETELY AT LEAST ONCE DURING THE FLIP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_place_battlefield(p):
   'place : BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_counter_word(p):
   'counter_word : COUNTER'
@@ -706,123 +719,123 @@ def p_counter_word_plural(p):
 
 def p_pt(p):
   'pt : math_exp SLASH math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_counter_pt_mod(p):
   'counter : pt counter_word'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_counter_mire(p):
   'counter : MIRE counter_word'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token(p):
   'token_part : pt token_desc CREATURE TOKEN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_with_keyword(p):
   'token : token_part WITH keyword'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_no_affect(p):
   'token : token_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_named(p):
   'token : token NAMED token_name'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_named_wasp(p):
   'token_name : WASP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_desc(p):
   'token_desc : token_desc_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_desc_recur(p):
   'token_desc : token_desc token_desc_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_color(p):
   'token_desc_part : color'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_token_type(p):
   'token_desc_part : type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_get(p):
   'get : GET'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_gets(p):
   'get : GETS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_draw_instruction(p):
   'draw : DRAW'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_draw_present(p):
   'draw : DRAWS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_banding(p):
   'keyword : BANDING'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_defender(p):
   'keyword : DEFENDER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_regenerate(p):
   'keyword : REGENERATE object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_flying(p):
   'keyword : FLYING'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_enchant(p):
   'keyword : ENCHANT object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_first_strike(p):
   'keyword : FIRST STRIKE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_protection(p):
   'keyword : PROTECTION FROM object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_keyword_swampwalk(p):
   'keyword : SWAMPWALK'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_desc_single(p):
   'change_desc : a change_desc'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_type(p):
   'change_desc : type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_pt(p):
   'change_desc : pt'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_type_chain(p):
   'change_desc : change_desc type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_qualified(p):
   'change_desc : change_desc qualifier'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_change_color(p):
   'change_desc : color'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_being_verb_are(p):
   'being_verb : ARE'
@@ -842,255 +855,255 @@ def p_have(p):
 
 def p_affect_term(p):
   'affect : affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_recur(p):
   'affect : affect affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_explicit_conjunction(p):
   'affect : affect AND affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_conditional_affect(p):
   'affect : affect IF conditional'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_repeated(p):
   'affect : affect FOR EACH type_list'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_cause_skip(p):
   'affect_part : object SKIPS time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_order(p):
   'affect_part : THEN affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_counterspell(p):
   'affect_part : COUNTER object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_sacrifice(p):
   'affect_part : object SACRIFICES object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_ownership(p):
   'affect_part : object OWN object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_exchange(p):
   'affect_part : EXCHANGE object_part WITH object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_lose_ability(p):
   'affect_part : object LOSES QUOTE ability QUOTE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_conjoined_ability_part(p):
   'affect_part : affect_part AND affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_gain_ability(p):
   'affect_part : object GAINS QUOTE ability QUOTE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_return(p):
   'affect_part : RETURN object TO zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_attach(p):
   'affect_part : ATTACH object TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_dont_untap(p):
   'affect_part : object dont UNTAP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_no_hand_size(p):
   'affect_part : object have NO MAXIMUM HAND SIZE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_attacks(p):
   'affect_part : object ATTACKS time IF ABLE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_schedule_trigger(p):
   'affect_part : trigger COMMA affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_pt_mod(p):
   'affect_part : object get math_exp SLASH math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_becomes_type(p):
   'affect_part : object being_verb change_desc'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_gains_keyword(p):
   'affect_part : object GAINS keyword'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_object_draw(p):
   'affect_part : object draw math_exp card'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_tapped(p):
   'affect_part : TAPPED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_tap(p):
   'affect_part : TAP object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_cast_illusory_mask(p):
   'affect_part : CAST object FACE DOWN AS A pt CREATURE SPELL WITHOUT PAYING ITS MANA COST'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_unflip_illusory_mask_creature(p):
   'affect_part : INSTEAD IT APOSTROPHE S TURNED FACE UP AND ASSIGNS OR DEALS DAMAGE COMMA IS DEALT DAMAGE COMMA OR BECOMES TAPPED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_time_restriction(p):
   'affect_part : FOR AS LONG AS conditional'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_resolve_cost(p):
   'affect_part : PAY cost'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_resolve_manditory_affect(p):
   'affect_part : object affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_resolve_optional_affect(p):
   'affect_part : object MAY affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_ability_static(p):
   'affect_part : affect_part time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_conditional(p):
   'affect_part : IF conditional COMMA affect'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_counters(p):
   'affect_part : math_exp counter ON object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_look(p):
   'affect_part : LOOK AT object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_put_counters(p):
   'affect_part : PUT math_exp counter ON object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_put_tokens(p):
   'affect_part : PUT math_exp token ONTO THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_remove_counters(p):
   'affect_part : REMOVE math_exp counter FROM object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_remove_card(p):
   'affect_part : REMOVE object FROM zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_life_gain(p):
   'affect_part : GAIN math_exp LIFE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_variable_life_gain(p):
   'affect_part : GAIN LIFE math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_prevent_next(p):
   'affect_part : PREVENT THE NEXT math_exp DAMAGE THAT WOULD BE DEALT TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_prevent_backref(p):
   'affect_part : PREVENT math_exp OF THAT DAMAGE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_prevent_unlimited(p):
   'affect_part : PREVENT THAT DAMAGE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_destroy(p):
   'affect_part : DESTROY object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_filp(p):
   'affect_part : FLIP TILDE ONTO THE place FROM A HEIGHT OF AT LEAST ONE FOOT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_memory(p):
   'affect_part : CHOOSE object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_stay_tapped(p):
   'affect_part : object doesnt UNTAP'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_untap(p):
   'affect_part : UNTAP object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_where(p):
   'affect_part : affect_part COMMA WHERE where'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_but(p):
   'affect_part : affect_part COMMA BUT but'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_conjoin(p):
   'affect_part : affect_part COMMA affect_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_damage(p):
   'affect_part : object DEALS math_exp damage_type TO object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_add_mana_self(p):
   'affect_part : add cost TO YOUR MANA POOL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_add_ante(p):
   'affect_part : add object TO THE ANTE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_add_mana_object(p):
   'affect_part : object add cost TO object MANA POOL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_mana_release(p):
   'affect_part : SPEND mana AS THOUGH IT WERE mana'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_discard(p):
   'affect_part : object discard object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_skip(p):
   'affect_part : SKIP time'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_replacement(p):
   'affect_part : affect_part INSTEAD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_affect_add_turn(p):
   'affect_part : TAKE math_exp EXTRA TURN AFTER THIS ONE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_mana_colored(p):
   'mana : color MANA'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_discard(p):
   'discard : DISCARD'
@@ -1102,195 +1115,195 @@ def p_discards(p):
 
 def p_card(p):
   'card : CARD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cards(p):
   'card : CARDS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_add(p):
   'add : ADD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_adds(p):
   'add : ADDS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_onto(p):
   'zone : ONTO zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_library(p):
   'zone : YOUR LIBRARY'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_top_library(p):
   'zone : ON TOP OF YOUR LIBRARY'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_graveyard(p):
   'zone : INTO YOUR GRAVEYARD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_any_graveyard(p):
   'zone : IN A GRAVEYARD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_ante(p):
   'zone : IN THE ANTE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_battlefield(p):
   'zone : THE BATTLEFIELD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_deck(p):
   'zone : YOUR DECK'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_zone_controller(p):
   'zone : zone UNDER object CONTROL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_but_zone_replacement(p):
   'but : object MAY PUT object zone INSTEAD OF zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_where(p):
   'where : X IS math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_backref(p):
   'math_exp : THAT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_additional(p):
   'math_exp : math_exp ADDITIONAL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_or_gt(p):
   'math_exp : math_exp OR GREATER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_or_lt(p):
   'math_exp : math_exp OR LESS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_mt(p):
   'math_exp : MORE THAN math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_gt(p):
   'math_exp : GREATER THAN math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_count(p):
   'math_exp : THE NUMBER OF count'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_choose_up_to(p):
   'math_exp : UP TO math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_minus(p):
   'math_exp : math_exp MINUS math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_double_negative(p):
   'math_exp : math_exp BUT math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_unary_plus(p):
   'math_exp : PLUS number'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_const(p):
   'math_exp : number'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_equals(p):
   'math_exp : EQUAL TO math_exp'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_math_power(p):
   'math_exp : object POWER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_count_cards_hand(p):
   'count : CARDS IN object HAND'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_top(p):
   'qualifier : qualifier_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_recur(p):
   'qualifier : qualifier qualifier_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_attacking(p):
   'qualifier_part : ATTACKING'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_enchanted(p):
   'qualifier_part : ENCHANTED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_retain_property(p):
   'qualifier_part : THAT being_verb STILL object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_chaos_orb(p):
   'qualifier_part : IT TOUCHES'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_unblocked(p):
   'qualifier_part : math_exp UNBLOCKED'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_chosen(p):
   'qualifier_part : OF object CHOICE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_color(p):
   'qualifier_part : color'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_card(p):
   'qualifier_part : CARD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_zone(p):
   'qualifier_part : zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_zone_with(p):
   'qualifier_part : PUT zone WITH object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_held(p):
   'qualifier_part : IN object HAND'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_illusory_mask_creature_resolved(p):
   'qualifier_part : THAT SPELL BECOMES AS IT RESOLVES'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_replacement(p):
   'qualifier_part : INSTEAD'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_top_card(p):
   'qualifier_part : THE TOP CARD OF'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_controlled(p):
   'qualifier_part : object CONTROL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_qualifier_this_turn(p):
   'qualifier_part : THIS TURN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_controller(p):
   'controller : CONTROLLER'
@@ -1302,47 +1315,47 @@ def p_controllers(p):
 
 def p_object_part(p):
   'object : object_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_numbered_object(p):
   'object : math_exp object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_by(p):
   'object : object BY object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_with(p):
   'object_part : object_part WITH conditional_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_num(p):
   'object_part : math_exp type_list'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_backreference(p):
   'object_part : backref'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_backreference_controller(p):
   'object_part : backref controller'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_prequalified_type(p):
   'object_part : qualifier type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_prequalified_zone(p):
   'object_part : qualifier zone'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_qualified(p):
   'object : object qualifier'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_attribute(p):
   'object : object attribute'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_target(p):
   'object_part : TARGET type_list'
@@ -1350,71 +1363,71 @@ def p_object_part_target(p):
 
 def p_object_part_each(p):
   'object_part : EACH type_list'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_all(p):
   'object_part : type_list'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_self(p):
   'object_part : TILDE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_object_part_all_things_of_color(p):
   'object_part : color'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_attribute_hand(p):
   'attribute : HAND'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_top(p):
   'backref : backref_part'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_chosen_player(p):
   'backref_part : THE CHOSEN type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_by_type(p):
   'backref_part : THE type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_type(p):
   'backref_part : THAT type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_gendered_player(p):
   'backref_part : HIS OR HER'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_their(p):
   'backref_part : THEIR'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_it(p):
   'backref_part : IT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_your(p):
   'backref_part : YOUR'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_you(p):
   'backref_part : YOU'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_its(p):
   'backref_part : ITS' #english special case of IT APOSTROPHE S
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_possessive(p):
   'backref_part : backref_part APOSTROPHE S'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_backref_being(p):
   'backref_part : backref_part APOSTROPHE RE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_list_term(p):
   'type_list : type'
@@ -1423,27 +1436,27 @@ def p_type_list_term(p):
 #these help keep commas in line
 def p_type_list_3(p):
   'type_list : card_type COMMA card_type COMMA'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_list_disjunction(p):
   'type_list : type_list OR card_type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_deathlance(p):
   'type_list : SPELL OR PERMANENT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_list_conjunction(p):
   'type_list : type_list AND card_type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_list_qualified(p):
   'type_list : type_list qualifier'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_qualified(p):
   'type : qualifier type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_choice(p):
   'type : type OR type'
@@ -1451,7 +1464,7 @@ def p_type_choice(p):
 
 def p_type_exclude(p):
   'type : NON MINUS type type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_effect(p):
   'type : EFFECT'
@@ -1471,23 +1484,23 @@ def p_type_card(p):
 
 def p_type_damage_source(p):
   'type : SOURCE'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_card_type(p):
   'type : card_type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_qualified_card_type(p):
   'type : qualifier card_type'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_artifact(p):
   'card_type : ARTIFACT'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_artifacts(p):
   'card_type : ARTIFACTS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_creature(p):
   'card_type : CREATURE'
@@ -1531,7 +1544,7 @@ def p_type_spell(p):
 
 def p_type_players(p):
   'type : PLAYER APOSTROPHE S'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_player(p):
   'type : PLAYER'
@@ -1539,7 +1552,7 @@ def p_type_player(p):
 
 def p_type_player_plural(p):
   'type : PLAYERS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_type_opponent(p):
   'type : OPPONENT'
@@ -1571,15 +1584,15 @@ def p_type_island(p):
 
 def p_a(p):
   'a : A'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_an(p):
   'a : AN'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_number_num(p):
   'number : NUM'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_number_bracketed(p):
   'number : OPENBRACKET OPENBRACKET OPENBRACKET number CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
@@ -1587,7 +1600,7 @@ def p_number_bracketed(p):
 
 def p_num_all(p):
   'number : ALL'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_num_a(p):
   'number : a'
@@ -1595,7 +1608,7 @@ def p_num_a(p):
 
 def p_number_x(p):
   'number : X'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_number_one(p):
   'number : ONE'
@@ -1671,19 +1684,19 @@ def p_cost_cs(p):
 
 def p_cost_choice(p):
   'cost_part : number MANA OF ANY COLOR'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cost_choice_mult(p):
   'cost_part : number MANA OF ANY ONE COLOR'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cost_sac(p):
   'cost_part : SACRIFICE object'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cost_part_tap(p):
   'cost_part : OPENBRACKET OPENBRACKET OPENBRACKET TAP CLOSEBRACKET CLOSEBRACKET CLOSEBRACKET'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 def p_cost_number(p):
   'cost_part : number'
@@ -1719,7 +1732,7 @@ def p_color_black(p):
 
 def p_color_less(p):
   'color : COLORLESS'
-  p[0] = unimplemented()
+  p[0] = unimplemented(p)
 
 parser = yacc.yacc(debug=True)
 
@@ -1739,9 +1752,11 @@ if __name__ == '__main__':
           print "Parsing: ", name, card_text, id
         else:
           print ".",
-        parse(name, card_text)
+        parsed = parse(name, card_text)
         if DEBUG:
-          print "Parsed: ", name, card_text, id
+          print "Parsed: ", name
+          print card_text
+          print str(parsed)
           print
       except Exception, e:
         print
